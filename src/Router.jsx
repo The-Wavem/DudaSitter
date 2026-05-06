@@ -1,6 +1,5 @@
-import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/public/Home';
 
 export default function Router() {
   return (

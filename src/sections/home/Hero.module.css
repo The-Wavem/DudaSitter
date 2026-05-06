@@ -1,0 +1,311 @@
+.heroSection {
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 0 7.5rem;
+  background: linear-gradient(180deg, #fef9f2 0%, #f8f1e6 100%);
+}
+
+.heroContainer {
+  position: relative;
+  z-index: 1;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 3rem;
+}
+
+.heroContent {
+  max-width: 42rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #d7e7d8;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 30px rgba(90, 64, 49, 0.08);
+}
+
+.badgeIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: #edf7ee;
+  flex-shrink: 0;
+}
+
+.badgeIconSvg {
+  width: 1rem;
+  height: 1rem;
+  color: #5f8c6a;
+}
+
+.badgeText {
+  font-size: 0.93rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #3f2d24;
+}
+
+.title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  color: #1f1612;
+}
+
+.titleAccent {
+  color: #d47a56;
+  font-style: italic;
+}
+
+.description {
+  max-width: 34rem;
+  margin: 0 0 2rem;
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: #5d4639;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.5rem;
+  padding: 0.95rem 1.6rem;
+  border-radius: 1.1rem;
+  background: linear-gradient(135deg, #d47a56 0%, #bf6243 100%);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 18px 36px rgba(191, 98, 67, 0.28);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.ctaButton:hover {
+  box-shadow: 0 22px 42px rgba(191, 98, 67, 0.34);
+}
+
+.ctaIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.heroVisual {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  margin-left: auto;
+}
+
+.imageFrame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 8px solid #ffffff;
+  border-radius: 3rem;
+  background: #f0e4d6;
+  box-shadow: 0 32px 70px rgba(53, 39, 31, 0.16);
+  transform: rotate(2deg);
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.floatingCard {
+  position: absolute;
+  left: -2rem;
+  bottom: -2.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 15rem;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(53, 39, 31, 0.14);
+  transform: rotate(-3deg);
+}
+
+.floatingCardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: #f7e6d9;
+  flex-shrink: 0;
+}
+
+.floatingCardIconSvg {
+  width: 1.4rem;
+  height: 1.4rem;
+  color: #b76646;
+  fill: currentColor;
+}
+
+.floatingCardContent {
+  min-width: 0;
+}
+
+.floatingCardTitle {
+  margin: 0;
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #1f1612;
+}
+
+.floatingCardText {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: #5d4639;
+}
+
+.heroGlowPrimary,
+.heroGlowSecondary {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.heroGlowPrimary {
+  top: -6rem;
+  right: -8rem;
+  width: 37.5rem;
+  height: 37.5rem;
+  border-radius: 50%;
+  background: rgba(252, 195, 143, 0.42);
+}
+
+.heroGlowSecondary {
+  left: -7rem;
+  bottom: -8rem;
+  width: 25rem;
+  height: 25rem;
+  border-radius: 28%;
+  background: rgba(171, 207, 175, 0.35);
+}
+
+@media (max-width: 1024px) {
+  .heroSection {
+    padding: 5rem 0 6.5rem;
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .heroContent {
+    max-width: 46rem;
+  }
+
+  .heroVisual {
+    max-width: 30rem;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 4.5rem 0 5.5rem;
+  }
+
+  .heroContainer {
+    padding: 0 1rem;
+  }
+
+  .badge {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .badgeText {
+    font-size: 0.86rem;
+  }
+
+  .title {
+    font-size: clamp(2.5rem, 10vw, 3.4rem);
+  }
+
+  .description {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .ctaButton {
+    width: 100%;
+  }
+
+  .heroVisual {
+    max-width: 100%;
+    padding-bottom: 1.5rem;
+  }
+
+  .imageFrame {
+    border-radius: 2.2rem;
+    transform: none;
+  }
+
+  .floatingCard {
+    left: 1rem;
+    right: 1rem;
+    bottom: -1.25rem;
+    max-width: none;
+    transform: none;
+  }
+
+  .heroGlowPrimary {
+    top: -8rem;
+    right: -14rem;
+    width: 26rem;
+    height: 26rem;
+  }
+
+  .heroGlowSecondary {
+    left: -9rem;
+    bottom: -10rem;
+    width: 18rem;
+    height: 18rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaButton,
+  .imageFrame,
+  .floatingCard {
+    transition: none;
+  }
+}

@@ -1,15 +1,15 @@
-// {
-//   "compilerOptions": {
-//     "baseUrl": ".",
-//     "paths": {
-//       "@/*": ["src/*"],
-//       "@components/*": ["src/components/*"],
-//       "@pages/*": ["src/pages/*"],
-//       "@sections/*": ["src/sections/*"],
-//       "@services/*": ["src/services/*"],
-//       "@hooks/*": ["src/hooks/*"],
-//       "@theme/*": ["src/theme/*"]
-//     }
-//   },
-//   "include": ["src"]
-// }
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@sections/*": ["src/sections/*"],
+      "@services/*": ["src/services/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@theme/*": ["src/theme/*"]
+    }
+  },
+  "include": ["src"]
+}
