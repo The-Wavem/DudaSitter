@@ -438,7 +438,7 @@
 }
 
 :global(.react-datepicker__day-name) {
-  color: rgba(255, 255, 255, 0.95);
+  color: #9f5a35;
 }
 
 :global(.react-datepicker-popper) {
