@@ -1,0 +1,169 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid #ebdfd4;
+  background: rgba(254, 249, 242, 0.82);
+  backdrop-filter: blur(12px);
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 5rem;
+}
+
+.brandArea {
+  display: flex;
+  align-items: center;
+}
+
+.brandLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #c97f50;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.brandLink:hover {
+  color: #b96e41;
+}
+
+.brandIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.brandText {
+  color: #1f1612;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.desktopMenu {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLink {
+  padding-bottom: 0.2rem;
+  color: #5d4639;
+  font-size: 0.98rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.navLink:hover {
+  color: #c97f50;
+}
+
+.navLinkActive {
+  color: #c97f50;
+  border-bottom-color: #c97f50;
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.25rem;
+  border-radius: 999px;
+  background: #c97f50;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(201, 127, 80, 0.2);
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.ctaLink:hover {
+  background: #b96e41;
+  transform: translateY(-1px);
+}
+
+.mobileToggleArea {
+  display: flex;
+  align-items: center;
+}
+
+.mobileToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #5d4639;
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.mobileToggle:hover {
+  color: #c97f50;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.toggleIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.mobileMenu {
+  border-top: 1px solid #ebdfd4;
+  border-bottom: 1px solid #ebdfd4;
+  background: #fef9f2;
+}
+
+.mobileMenuInner {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem 1rem;
+}
+
+.mobileLink {
+  display: block;
+  padding: 0.8rem 0.9rem;
+  border-radius: 0.8rem;
+  color: #5d4639;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.mobileLink:hover {
+  color: #c97f50;
+  background: #f8efe5;
+}
+
+.mobileLinkActive {
+  color: #b96e41;
+  background: rgba(201, 127, 80, 0.1);
+}
+
+@media (min-width: 768px) {
+  .desktopMenu {
+    display: flex;
+  }
+
+  .mobileToggleArea,
+  .mobileMenu {
+    display: none;
+  }
+}
