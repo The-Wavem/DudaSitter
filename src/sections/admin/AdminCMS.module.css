@@ -1,0 +1,346 @@
+.section {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  margin: 0;
+  color: #c97f50;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: #5d4639;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(53, 39, 31, 0.05);
+  flex-wrap: wrap;
+}
+
+.tabButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: #5d4639;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tabButtonActive {
+  background: #f5e5bd;
+  color: #1f1612;
+}
+
+.tabIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.gridTwoColumns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.panel,
+.panelLarge {
+  padding: 1.5rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 2rem;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(53, 39, 31, 0.05);
+}
+
+.panelLarge {
+  max-width: 64rem;
+}
+
+.panelTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  color: #1f1612;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.panelIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #d47a56;
+}
+
+.form,
+.formLarge {
+  display: grid;
+  gap: 1rem;
+}
+
+.formLarge {
+  max-width: 64rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.doubleField {
+  display: grid;
+  gap: 1rem;
+}
+
+.label {
+  color: #5d4639;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  border: 1px solid #ebdfd4;
+  border-radius: 0.9rem;
+  background: #fef9f2;
+  color: #1f1612;
+  font: inherit;
+}
+
+.input,
+.select {
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+}
+
+.textarea {
+  min-height: 4.5rem;
+  padding: 0.9rem 1rem;
+  resize: vertical;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #c97f50;
+  box-shadow: 0 0 0 4px rgba(201, 127, 80, 0.14);
+}
+
+.saveButton,
+.saveButtonWide {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.9rem;
+  background: #7c9f7f;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.saveButtonWide {
+  max-width: 18rem;
+}
+
+.saveIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.emptyState {
+  min-height: 15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border: 1px dashed #ebdfd4;
+  border-radius: 1.25rem;
+  background: #fef9f2;
+}
+
+.emptyIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 0.75rem;
+  color: #cfc2b2;
+}
+
+.emptyText {
+  margin: 0;
+  color: #5d4639;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.imageCard {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  border: 1px solid #ebdfd4;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.serviceTag {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+.serviceTagSitter {
+  background: rgba(245, 229, 189, 0.9);
+  color: #1f1612;
+}
+
+.serviceTagWalker {
+  background: rgba(244, 205, 182, 0.9);
+  color: #8c4f2a;
+}
+
+.deleteOverlayButton,
+.deleteMiniButton {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.deleteIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.testimonialList {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.testimonialCard {
+  position: relative;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.25rem;
+  background: #fef9f2;
+}
+
+.testimonialQuote {
+  position: absolute;
+  top: 0.95rem;
+  left: 0.95rem;
+  width: 1rem;
+  height: 1rem;
+  color: #d4a83f;
+}
+
+.testimonialContent {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.testimonialText {
+  margin: 0;
+  color: #1f1612;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.testimonialAuthor {
+  margin: 0;
+  color: #5d4639;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.testimonialAuthor span {
+  font-weight: 400;
+  opacity: 0.72;
+}
+
+.deleteMiniButton {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+@media (min-width: 1024px) {
+  .gridTwoColumns {
+    grid-template-columns: 4fr 8fr;
+  }
+
+  .doubleField {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .imageGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tabButton {
+    width: 100%;
+  }
+
+  .panel,
+  .panelLarge {
+    border-radius: 1.25rem;
+  }
+
+  .saveButtonWide {
+    max-width: 100%;
+  }
+}

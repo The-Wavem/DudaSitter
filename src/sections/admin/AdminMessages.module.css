@@ -1,0 +1,238 @@
+.section {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  margin: 0;
+  color: #c97f50;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: #5d4639;
+}
+
+.emptyState {
+  min-height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 2rem;
+  background: #ffffff;
+}
+
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  color: #cfc2b2;
+}
+
+.emptyText {
+  margin: 0;
+  color: #5d4639;
+  font-size: 1rem;
+}
+
+.list {
+  display: grid;
+  gap: 1rem;
+}
+
+.card {
+  position: relative;
+  padding: 1.5rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 2rem;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(53, 39, 31, 0.05);
+}
+
+.cardNew {
+  border-color: #c97f50;
+}
+
+.newBadge {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+  display: inline-flex;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.newPing,
+.newDot {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+}
+
+.newPing {
+  background: rgba(201, 127, 80, 0.5);
+  animation: ping 1.2s ease-in-out infinite;
+}
+
+.newDot {
+  background: #c97f50;
+  border: 2px solid #ffffff;
+}
+
+.cardTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  margin: 0;
+  color: #1f1612;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.cardMeta {
+  margin: 0.35rem 0 0;
+  color: #5d4639;
+  font-size: 0.95rem;
+}
+
+.cardMeta span {
+  font-weight: 700;
+}
+
+.dateBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: #f7efe4;
+  color: rgba(31, 22, 18, 0.55);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.messageBox {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #f0e5d8;
+  border-radius: 1rem;
+  background: #fef9f2;
+  color: #5d4639;
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: flex-end;
+}
+
+.scheduleButton,
+.deleteButton,
+.readButton,
+.readOnlyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 0.95rem;
+  border: 0;
+  border-radius: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.scheduleButton {
+  margin-right: auto;
+  background: #f4ddcb;
+  color: #8c4f2a;
+}
+
+.scheduleButton:hover {
+  background: #efd2bd;
+}
+
+.deleteButton {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.deleteButton:hover {
+  background: #fee2e2;
+}
+
+.readButton {
+  background: #f7e6d9;
+  color: #b96e41;
+}
+
+.readButton:hover {
+  background: #efdbc9;
+}
+
+.readOnlyButton {
+  background: #dcfce7;
+  color: #15803d;
+  cursor: default;
+}
+
+.actionIcon {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1.2rem;
+    border-radius: 1.5rem;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .scheduleButton,
+  .deleteButton,
+  .readButton,
+  .readOnlyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .scheduleButton {
+    margin-right: 0;
+  }
+}

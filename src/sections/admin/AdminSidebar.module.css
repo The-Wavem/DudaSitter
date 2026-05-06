@@ -1,0 +1,192 @@
+.sidebar {
+  width: 100%;
+  background: #f8f1e7;
+  border-right: 1px solid #eadfce;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(245, 230, 217, 0.95), transparent 34%), radial-gradient(circle at bottom right, rgba(124, 159, 127, 0.12), transparent 30%);
+  pointer-events: none;
+}
+
+.topSection {
+  padding: 1.5rem;
+  position: relative;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: #c97f50;
+  color: #fef9f2;
+  box-shadow: 0 10px 20px rgba(201, 127, 80, 0.18);
+  font-weight: 800;
+  transform: translateZ(0);
+}
+
+.brandMark span {
+  font-size: 0.9rem;
+}
+
+.brandTitle {
+  margin: 0;
+  color: #c97f50;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 0;
+  border-left: 4px solid transparent;
+  border-radius: 0.9rem;
+  background: transparent;
+  color: #5d4639;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.navButton:hover {
+  background: #f3e9db;
+}
+
+.navButtonActive {
+  background: #f6eee4;
+  color: #1f1612;
+  border-left-color: #d47a56;
+}
+
+.navEmoji {
+  width: 1rem;
+}
+
+.navLabel {
+  font-size: 0.95rem;
+}
+
+.bottomSection {
+  margin-top: auto;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+  position: relative;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 0;
+  border-radius: 0.9rem;
+  background: #efe5d7;
+  color: #5d4639;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.logoutIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.profileCard {
+  padding: 1rem;
+  border: 1px solid #e2d5c4;
+  border-radius: 1.2rem;
+  background: #f6eee4;
+  box-shadow: 0 8px 20px rgba(53, 39, 31, 0.05);
+}
+
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #c97f50;
+}
+
+.avatarIcon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.profileName {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.profileRole {
+  margin: 0.15rem 0 0;
+  font-size: 0.72rem;
+  opacity: 0.72;
+}
+
+.progressRow {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+}
+
+.progressActive,
+.progressMuted {
+  flex: 1;
+  height: 0.35rem;
+  border-radius: 999px;
+}
+
+.progressActive {
+  background: #c97f50;
+}
+
+.progressMuted {
+  background: #eadfce;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 16rem;
+    min-height: 100vh;
+  }
+}

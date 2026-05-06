@@ -1,0 +1,112 @@
+import { useEffect, useState } from 'react';
+import { CalendarPlus, Check, Circle, MessageSquare, Trash2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { deleteMessage, getMessages, markAsRead } from '@/lib/utils';
+import styles from './AdminMessages.module.css';
+
+const MotionDiv = motion.div;
+
+const listVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 14, scale: 0.99 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export default function AdminMessages({ onOpenAgenda = () => {} }) {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    setMessages(getMessages());
+  }, []);
+
+  const handleMarkAsRead = (id) => {
+    markAsRead(id);
+    setMessages(getMessages());
+  };
+
+  const handleDeleteMessage = (id) => {
+    deleteMessage(id);
+    setMessages(getMessages());
+  };
+
+  return (
+    <section className={styles.section}>
+      <header className={styles.header}>
+        <div>
+          <h2 className={styles.title}>Mensagens Recebidas</h2>
+          <p className={styles.subtitle}>Gerencie seus contatos e orçamentos.</p>
+        </div>
+      </header>
+
+      {messages.length === 0 ? (
+        <MotionDiv className={styles.emptyState} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+          <MessageSquare className={styles.emptyIcon} aria-hidden="true" />
+          <p className={styles.emptyText}>Nenhuma mensagem no momento.</p>
+        </MotionDiv>
+      ) : (
+        <MotionDiv className={styles.list} variants={listVariants} initial="hidden" animate="show">
+          {messages.map((message) => {
+            const isNew = message.status === 'new';
+
+            return (
+              <MotionDiv key={message.id} variants={itemVariants} whileHover={{ y: -2 }} className={`${styles.card} ${isNew ? styles.cardNew : ''}`}>
+                {isNew && (
+                  <span className={styles.newBadge} aria-hidden="true">
+                    <span className={styles.newPing} />
+                    <span className={styles.newDot} />
+                  </span>
+                )}
+
+                <div className={styles.cardTop}>
+                  <div>
+                    <h3 className={styles.cardTitle}>{message.name}</h3>
+                    <p className={styles.cardMeta}>
+                      <span>Pet:</span> {message.petName} &nbsp;|&nbsp; <span>Serviço:</span> {message.service}
+                    </p>
+                  </div>
+
+                  <span className={styles.dateBadge}>{new Date(message.date).toLocaleString('pt-BR')}</span>
+                </div>
+
+                <div className={styles.messageBox}>{message.message}</div>
+
+                <div className={styles.actions}>
+                  <button type="button" onClick={() => onOpenAgenda(message)} className={styles.scheduleButton}>
+                    <CalendarPlus className={styles.actionIcon} aria-hidden="true" /> Agendar Serviço
+                  </button>
+
+                  <button type="button" onClick={() => handleDeleteMessage(message.id)} className={styles.deleteButton}>
+                    <Trash2 className={styles.actionIcon} aria-hidden="true" /> Excluir
+                  </button>
+
+                  {isNew ? (
+                    <button type="button" onClick={() => handleMarkAsRead(message.id)} className={styles.readButton}>
+                      <Circle className={styles.actionIcon} aria-hidden="true" /> Marcar como lido
+                    </button>
+                  ) : (
+                    <button type="button" className={styles.readOnlyButton} disabled>
+                      <Check className={styles.actionIcon} aria-hidden="true" /> Lido
+                    </button>
+                  )}
+                </div>
+              </MotionDiv>
+            );
+          })}
+        </MotionDiv>
+      )}
+    </section>
+  );
+}

@@ -1,0 +1,345 @@
+.section {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  margin: 0;
+  color: #c97f50;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: #5d4639;
+}
+
+.summaryCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(53, 39, 31, 0.05);
+}
+
+.summaryIconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  background: #f7e6d9;
+  color: #c97f50;
+}
+
+.summaryIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.summaryTitle {
+  margin: 0;
+  color: #1f1612;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.summaryText {
+  margin: 0.2rem 0 0;
+  color: #5d4639;
+  font-size: 0.92rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.formCard,
+.timeline {
+  min-width: 0;
+}
+
+.formCard {
+  padding: 1.5rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 2rem;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(53, 39, 31, 0.05);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  color: #1f1612;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sectionTitleIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #d47a56;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.doubleField {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.label {
+  color: #5d4639;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  border: 1px solid #ebdfd4;
+  border-radius: 0.9rem;
+  background: #fef9f2;
+  color: #1f1612;
+  font: inherit;
+}
+
+.input,
+.select {
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+}
+
+.textarea {
+  min-height: 4.5rem;
+  padding: 0.9rem 1rem;
+  resize: none;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #c97f50;
+  box-shadow: 0 0 0 4px rgba(201, 127, 80, 0.14);
+}
+
+.saveButton {
+  width: 100%;
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.9rem;
+  background: #7c9f7f;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.timeline {
+  display: grid;
+  gap: 1rem;
+}
+
+.emptyState {
+  min-height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 2rem;
+  background: #ffffff;
+}
+
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  color: #d0c2b1;
+}
+
+.emptyText {
+  margin: 0;
+  color: #5d4639;
+}
+
+.timelineCard {
+  padding: 1.25rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(53, 39, 31, 0.05);
+}
+
+.timelineCardActive {
+  border-color: #c97f50;
+}
+
+.timelineCardMuted {
+  opacity: 0.75;
+}
+
+.timelineTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  background: #f5e5bd;
+  color: #8a5a2d;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.timelineTitle {
+  margin: 0.6rem 0 0;
+  color: #1f1612;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.timelineTitle span {
+  color: #5d4639;
+  font-weight: 500;
+}
+
+.timelineService {
+  margin: 0.2rem 0 0;
+  color: #5d4639;
+  font-size: 0.9rem;
+}
+
+.calendarLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-start;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.7rem;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.linkIcon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.notes {
+  margin-bottom: 0.85rem;
+  padding: 0.8rem;
+  border: 1px solid #f0e5d8;
+  border-radius: 0.85rem;
+  background: #fef9f2;
+  color: #5d4639;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  border-top: 1px solid #f0e5d8;
+  padding-top: 0.85rem;
+}
+
+.completeButton,
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.8rem;
+  border: 0;
+  border-radius: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.completeButton {
+  color: #166534;
+  background: #ecfdf5;
+}
+
+.cancelButton {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.statusText {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.statusCompleted {
+  color: #16a34a;
+}
+
+.statusCancelled {
+  color: #ef4444;
+}
+
+.actionIcon {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 5fr 7fr;
+    align-items: start;
+  }
+
+  .doubleField {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .timelineTop {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .formCard,
+  .timelineCard {
+    border-radius: 1.25rem;
+  }
+}

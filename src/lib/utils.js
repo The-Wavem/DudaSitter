@@ -62,10 +62,6 @@ const defaultTestimonials = [
   },
 ];
 
-export function getTestimonials() {
-  return defaultTestimonials;
-}
-
 const defaultAboutData = {
   age: '22 anos',
   semester: '5º período',
@@ -73,21 +69,11 @@ const defaultAboutData = {
   mission: 'Oferecer um cuidado ético, acolhedor e seguro para que cada pet se sinta protegido e cada tutor tenha tranquilidade na sua ausência.',
 };
 
-export function getAboutData() {
-  return defaultAboutData;
-}
-
-const contactKey = 'dudaSitterContactMessages';
-
 const defaultContactData = {
   whatsapp: '21972229509',
   instagram: 'dudasitter',
   introText: 'Me conte sobre o seu pet e o serviço que você precisa. Vou responder o mais rápido possível para entendermos juntos a melhor forma de cuidado.',
 };
-
-export function getContactData() {
-  return defaultContactData;
-}
 
 export function saveMessage(formData) {
   if (typeof window === 'undefined') {
@@ -95,17 +81,170 @@ export function saveMessage(formData) {
   }
 
   try {
-    const storedMessages = window.localStorage.getItem(contactKey);
-    const messages = storedMessages ? JSON.parse(storedMessages) : [];
-    const nextMessages = Array.isArray(messages) ? messages : [];
+    const nextMessages = getMessages();
 
     nextMessages.unshift({
-      ...formData,
-      createdAt: new Date().toISOString(),
+      id: `message-${Date.now()}`,
+      name: formData.name ?? '',
+      petName: formData.petName ?? '',
+      service: formData.service ?? '',
+      message: formData.message ?? '',
+      status: 'new',
+      date: new Date().toISOString(),
     });
 
-    window.localStorage.setItem(contactKey, JSON.stringify(nextMessages));
+    window.localStorage.setItem(messagesKey, JSON.stringify(nextMessages));
   } catch {
-    window.localStorage.setItem(contactKey, JSON.stringify([{ ...formData, createdAt: new Date().toISOString() }]));
+    window.localStorage.setItem(
+      messagesKey,
+      JSON.stringify([
+        {
+          id: `message-${Date.now()}`,
+          name: formData.name ?? '',
+          petName: formData.petName ?? '',
+          service: formData.service ?? '',
+          message: formData.message ?? '',
+          status: 'new',
+          date: new Date().toISOString(),
+        },
+      ]),
+    );
   }
+}
+
+const messagesKey = 'duda_messages';
+const appointmentsKey = 'duda_appointments';
+const testimonialsKey = 'duda_testimonials';
+const aboutKey = 'duda_about_data';
+const contactDataKey = 'duda_contact_data';
+
+const defaultAppointmentList = [];
+
+function readJson(key, fallbackValue) {
+  if (typeof window === 'undefined') {
+    return fallbackValue;
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(key);
+    if (!rawValue) return fallbackValue;
+    const parsedValue = JSON.parse(rawValue);
+    return parsedValue ?? fallbackValue;
+  } catch {
+    return fallbackValue;
+  }
+}
+
+function writeJson(key, value) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function getMessages() {
+  return readJson(messagesKey, []).map((message, index) => ({
+    id: message.id ?? `message-${index}`,
+    name: message.name ?? '',
+    petName: message.petName ?? '',
+    service: message.service ?? '',
+    message: message.message ?? '',
+    status: message.status ?? 'new',
+    date: message.date ?? message.createdAt ?? new Date().toISOString(),
+  }));
+}
+
+export function markAsRead(id) {
+  writeJson(messagesKey, getMessages().map((message) => (message.id === id ? { ...message, status: 'read' } : message)));
+}
+
+export function deleteMessage(id) {
+  writeJson(messagesKey, getMessages().filter((message) => message.id !== id));
+}
+
+export function getAppointments() {
+  return readJson(appointmentsKey, defaultAppointmentList).map((appointment, index) => ({
+    id: appointment.id ?? `appointment-${index}`,
+    tutorName: appointment.tutorName ?? '',
+    petName: appointment.petName ?? '',
+    service: appointment.service ?? '',
+    date: appointment.date ?? '',
+    startTime: appointment.startTime ?? '',
+    endTime: appointment.endTime ?? '',
+    notes: appointment.notes ?? '',
+    status: appointment.status ?? 'scheduled',
+  }));
+}
+
+export function saveAppointment(appointmentData) {
+  writeJson(appointmentsKey, [
+    ...getAppointments(),
+    {
+      id: `appointment-${Date.now()}`,
+      ...appointmentData,
+      status: 'scheduled',
+    },
+  ]);
+}
+
+export function updateAppointmentStatus(id, status) {
+  writeJson(
+    appointmentsKey,
+    getAppointments().map((appointment) => (appointment.id === id ? { ...appointment, status } : appointment)),
+  );
+}
+
+export function addGalleryImage(url, service) {
+  writeJson(galleryKey, [
+    ...getGallery(),
+    {
+      id: `gallery-${Date.now()}`,
+      url,
+      service,
+    },
+  ]);
+}
+
+export function deleteGalleryImage(id) {
+  writeJson(galleryKey, getGallery().filter((image) => image.id !== id));
+}
+
+export function getTestimonials() {
+  return readJson(testimonialsKey, defaultTestimonials).map((testimonial, index) => ({
+    id: testimonial.id ?? `testimonial-${index}`,
+    text: testimonial.text ?? '',
+    name: testimonial.name ?? '',
+    pet: testimonial.pet ?? '',
+  }));
+}
+
+export function addTestimonial(testimonialData) {
+  writeJson(testimonialsKey, [
+    ...getTestimonials(),
+    {
+      id: `testimonial-${Date.now()}`,
+      ...testimonialData,
+    },
+  ]);
+}
+
+export function deleteTestimonial(id) {
+  writeJson(testimonialsKey, getTestimonials().filter((testimonial) => testimonial.id !== id));
+}
+
+export function getAboutData() {
+  return readJson(aboutKey, defaultAboutData);
+}
+
+export function updateAboutData(aboutData) {
+  writeJson(aboutKey, aboutData);
+}
+
+export function getContactData() {
+  return readJson(contactDataKey, defaultContactData);
+}
+
+export function updateContactData(contactData) {
+  writeJson(contactDataKey, contactData);
 }
