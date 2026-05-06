@@ -1,0 +1,157 @@
+.section {
+  position: relative;
+}
+
+.formCard {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 3rem;
+  background: #ffffff;
+  box-shadow: 0 25px 60px rgba(53, 39, 31, 0.12);
+}
+
+.title {
+  margin: 0 0 1.5rem;
+  color: #1f1612;
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.label {
+  color: #5d4639;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.35rem;
+  background: #fef9f2;
+  color: #1f1612;
+  font: inherit;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.input,
+.select {
+  min-height: 3.5rem;
+  padding: 0.95rem 1.15rem;
+}
+
+.textarea {
+  min-height: 8.5rem;
+  padding: 1rem 1.15rem;
+  resize: none;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #c97f50;
+  box-shadow: 0 0 0 4px rgba(201, 127, 80, 0.14);
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 3.75rem;
+  border: 0;
+  border-radius: 1.35rem;
+  background: #c97f50;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 18px 40px rgba(201, 127, 80, 0.22);
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.submitButton:hover {
+  background: #b96e41;
+}
+
+.submitIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.successOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 3rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+}
+
+.successIconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.25rem;
+  height: 4.25rem;
+  margin-bottom: 1rem;
+  border-radius: 999px;
+  background: #dcfce7;
+}
+
+.successIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #22c55e;
+}
+
+.successTitle {
+  margin: 0 0 0.5rem;
+  color: #1f1612;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.successText {
+  margin: 0;
+  color: #5d4639;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .formCard {
+    padding: 1.25rem;
+    border-radius: 2rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .successOverlay {
+    border-radius: 2rem;
+  }
+}

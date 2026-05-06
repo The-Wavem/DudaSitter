@@ -1,0 +1,168 @@
+.section {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  color: #1f1612;
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.links {
+  display: grid;
+  gap: 1rem;
+}
+
+.whatsappCard,
+.instagramCard {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.75rem;
+  background: #ffffff;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.whatsappCard:hover,
+.instagramCard:hover {
+  box-shadow: 0 22px 45px rgba(53, 39, 31, 0.1);
+}
+
+.whatsappCard:hover {
+  border-color: #4ade80;
+}
+
+.instagramCard:hover {
+  border-color: #f9a8d4;
+}
+
+.whatsappIconWrap,
+.instagramIconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1.35rem;
+  flex-shrink: 0;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.whatsappIconWrap {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.instagramIconWrap {
+  background: #fce7f3;
+  color: #db2777;
+}
+
+.instagramCard:hover .instagramIconWrap {
+  background-image: linear-gradient(135deg, #facc15 0%, #ec4899 55%, #a855f7 100%);
+  color: #ffffff;
+}
+
+.whatsappCard:hover .whatsappIconWrap {
+  background: #22c55e;
+  color: #ffffff;
+}
+
+.whatsappIcon,
+.instagramIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.cardLabel {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #5d4639;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cardValue {
+  display: block;
+  color: #1f1612;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.serviceAreaCard {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.75rem;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(53, 39, 31, 0.06);
+}
+
+.serviceAreaGlow {
+  position: absolute;
+  top: -2.5rem;
+  right: -2.5rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 999px;
+  background: rgba(247, 208, 154, 0.45);
+  filter: blur(40px);
+}
+
+.serviceAreaTitle {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.5rem;
+  color: #1f1612;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.serviceAreaText {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #5d4639;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .whatsappCard,
+  .instagramCard,
+  .serviceAreaCard {
+    padding: 1.25rem;
+    border-radius: 1.5rem;
+  }
+
+  .whatsappIconWrap,
+  .instagramIconWrap {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .whatsappIcon,
+  .instagramIcon {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .cardValue {
+    font-size: 1.1rem;
+  }
+}

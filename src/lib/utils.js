@@ -76,3 +76,36 @@ const defaultAboutData = {
 export function getAboutData() {
   return defaultAboutData;
 }
+
+const contactKey = 'dudaSitterContactMessages';
+
+const defaultContactData = {
+  whatsapp: '21972229509',
+  instagram: 'dudasitter',
+  introText: 'Me conte sobre o seu pet e o serviço que você precisa. Vou responder o mais rápido possível para entendermos juntos a melhor forma de cuidado.',
+};
+
+export function getContactData() {
+  return defaultContactData;
+}
+
+export function saveMessage(formData) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    const storedMessages = window.localStorage.getItem(contactKey);
+    const messages = storedMessages ? JSON.parse(storedMessages) : [];
+    const nextMessages = Array.isArray(messages) ? messages : [];
+
+    nextMessages.unshift({
+      ...formData,
+      createdAt: new Date().toISOString(),
+    });
+
+    window.localStorage.setItem(contactKey, JSON.stringify(nextMessages));
+  } catch {
+    window.localStorage.setItem(contactKey, JSON.stringify([{ ...formData, createdAt: new Date().toISOString() }]));
+  }
+}
