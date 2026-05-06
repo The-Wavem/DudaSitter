@@ -11,6 +11,14 @@ export default function Footer() {
 					<p className={styles.description}>
 						Cuidado profissional e afetuoso para o seu melhor amigo. Em Curitiba e região.
 					</p>
+					<a
+						href="https://thewavem.web.app/"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={styles.wavemBadge}
+					>
+						Feito pela Wavem
+					</a>
 				</div>
 
 				<div className={styles.links}>
@@ -23,14 +31,16 @@ export default function Footer() {
 					<Link to="/contato" className={styles.link}>
 						Contato
 					</Link>
-					<Link to="/admin" className={styles.adminLink}>
+					{/* <Link to="/admin" className={styles.adminLink}>
 						Admin
-					</Link>
+					</Link> */}
 				</div>
 			</div>
 
 			<div className={styles.bottomBar}>
-				Feito com <Heart className={styles.heartIcon} aria-hidden="true" /> para pets felizes © {new Date().getFullYear()} Duda Sitter
+				<span>Feito com</span>
+				<Heart className={styles.heartIcon} aria-hidden="true" />
+				<span>para pets felizes © {new Date().getFullYear()} Duda Sitter</span>
 			</div>
 		</footer>
 	);
