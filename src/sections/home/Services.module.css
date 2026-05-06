@@ -1,0 +1,215 @@
+.section {
+  position: relative;
+  padding: 0 0 6rem;
+  background: #fef9f2;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header {
+  max-width: 42rem;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.kicker {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #c96f4f;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: #1f1612;
+  font-size: clamp(2.25rem, 4vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 3rem;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(53, 39, 31, 0.06);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.card:hover {
+  box-shadow: 0 24px 44px rgba(53, 39, 31, 0.12);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.iconWrapSitter,
+.iconWrapWalker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1.5rem;
+  flex-shrink: 0;
+}
+
+.iconWrapSitter {
+  background: #f7e6d9;
+  color: #c86e4f;
+}
+
+.iconWrapWalker {
+  background: #f3e6d6;
+  color: #c97f50;
+}
+
+.serviceIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.cardTitle {
+  margin: 0;
+  color: #1f1612;
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.cardDescription {
+  margin: 0 0 2rem;
+  color: #5d4639;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.list {
+  display: grid;
+  gap: 1rem;
+  flex: 1;
+  margin-bottom: 2rem;
+}
+
+.listItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.checkIconSitter,
+.checkIconWalker {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.checkIconSitter {
+  color: #d47a56;
+}
+
+.checkIconWalker {
+  color: #7c9f7f;
+}
+
+.listTitle {
+  display: block;
+  color: #1f1612;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.listText {
+  display: block;
+  color: #5d4639;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.galleryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0.95rem 1.25rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 1.25rem;
+  background: #fef8f1;
+  color: #30211b;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease, border-color 160ms ease;
+}
+
+.galleryButton:hover {
+  background: #f7efe5;
+  border-color: #dccbbb;
+}
+
+.buttonIcon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-bottom: 4.5rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+    text-align: left;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 1.5rem;
+    border-radius: 2.25rem;
+  }
+
+  .cardTitle {
+    font-size: 1.6rem;
+  }
+
+  .cardDescription {
+    margin-bottom: 1.5rem;
+  }
+}

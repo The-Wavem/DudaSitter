@@ -1,5 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import styles from './WhyChoose.module.css';
+import { motion, useReducedMotion } from "framer-motion";
+import styles from "./WhyChoose.module.css";
 
 const MotionSection = motion.section;
 const MotionDiv = motion.div;
@@ -12,7 +12,7 @@ export default function WhyChoose() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'spring', stiffness: 110, damping: 18 },
+      transition: { type: "spring", stiffness: 110, damping: 18 },
     },
   };
 
@@ -33,7 +33,9 @@ export default function WhyChoose() {
         <MotionDiv variants={fadeUp} className={styles.content}>
           <h2 className={styles.title}>Por que escolher um Pet Sitter?</h2>
           <p className={styles.description}>
-            Cuidado no conforto do seu lar, evitando mudanças de ambiente, <strong className={styles.highlight}>reduzindo a ansiedade</strong> do seu pet e garantindo qualidade de vida na sua ausência.
+            Cuidado no conforto do seu lar, evitando mudanças de ambiente,{" "}
+            <strong className={styles.highlight}>reduzindo a ansiedade</strong>{" "}
+            do seu pet e garantindo qualidade de vida na sua ausência.
           </p>
         </MotionDiv>
       </div>
