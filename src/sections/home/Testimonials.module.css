@@ -1,0 +1,149 @@
+.section {
+  background: #ffffff;
+  padding: 6rem 0;
+  border-top: 1px solid #ebdfd4;
+  border-bottom: 1px solid #ebdfd4;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  margin: 0;
+  color: #1f1612;
+  font-size: clamp(2.25rem, 4vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.sliderWrap {
+  position: relative;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.swiper {
+  padding: 0 3.5rem 3.5rem;
+}
+
+.slide {
+  height: auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 19rem;
+  padding: 2rem;
+  text-align: center;
+  background: #fef9f2;
+  border: 1px solid #ebdfd4;
+  border-radius: 3.5rem;
+  box-shadow: 0 12px 30px rgba(53, 39, 31, 0.06);
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.starIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #d4a83f;
+  fill: currentColor;
+}
+
+.quote {
+  margin: 0 0 1.75rem;
+  color: #1f1612;
+  font-size: clamp(1.1rem, 2.3vw, 1.5rem);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.author {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.name {
+  margin: 0;
+  color: #1f1612;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.pet {
+  margin: 0;
+  color: #5d4639;
+  font-size: 0.92rem;
+}
+
+.emptyState {
+  margin: 0;
+  color: #5d4639;
+  font-size: 1rem;
+}
+
+.swiper :global(.swiper-button-prev),
+.swiper :global(.swiper-button-next) {
+  width: 1rem;
+  height: 3rem;
+  margin-top: -3.5rem;
+  color: #1f1612;
+}
+
+.swiper :global(.swiper-button-prev)::after,
+.swiper :global(.swiper-button-next)::after {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.swiper :global(.swiper-pagination) {
+  bottom: 0 !important;
+}
+
+.swiper :global(.swiper-pagination-bullet) {
+  width: 0.7rem;
+  height: 0.7rem;
+  background: #cdbcae;
+  opacity: 1;
+}
+
+.swiper :global(.swiper-pagination-bullet-active) {
+  background: #d47a56;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 4.5rem 0;
+  }
+
+  .swiper {
+    padding: 0 0 3rem;
+  }
+
+  .card {
+    min-height: 17rem;
+    padding: 1.5rem;
+    border-radius: 2.5rem;
+  }
+
+  .swiper :global(.swiper-button-prev),
+  .swiper :global(.swiper-button-next) {
+    display: none;
+  }
+}

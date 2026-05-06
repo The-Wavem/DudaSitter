@@ -3,12 +3,14 @@ import Hero from '@/sections/home/Hero';
 import WhyChoose from '@/sections/home/WhyChoose';
 import Services from '@/sections/home/Services';
 import GalleryModal from '@/sections/home/GalleryModal';
-import { getGallery } from '@/lib/utils';
+import Testimonials from '@/sections/home/Testimonials';
+import { getGallery, getTestimonials } from '@/lib/utils';
 
 export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [activeServiceFilter, setActiveServiceFilter] = useState('Sitter');
   const [galleryImages, setGalleryImages] = useState([]);
+  const [testimonials] = useState(() => getTestimonials());
 
   useEffect(() => {
     const frameId = window.requestAnimationFrame(() => {
@@ -31,6 +33,7 @@ export default function Home() {
       <Hero />
       <WhyChoose />
       <Services onOpenGallery={openGallery} />
+      <Testimonials testimonials={testimonials} />
       <GalleryModal
         isOpen={galleryOpen}
         onClose={() => setGalleryOpen(false)}

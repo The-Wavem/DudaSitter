@@ -40,3 +40,28 @@ export function getGallery() {
     return defaultGallery;
   }
 }
+
+const defaultTestimonials = [
+  {
+    id: 'testimonial-1',
+    text: 'Sempre muito cuidadosa e atenciosa. Meu pet ficou tranquilo e feliz durante todo o período.',
+    name: 'Mariana S.',
+    pet: 'Tutora do Theo',
+  },
+  {
+    id: 'testimonial-2',
+    text: 'Passeios organizados e cheios de carinho. Recebi fotos e atualizações o tempo todo.',
+    name: 'Carlos M.',
+    pet: 'Tutor da Luna',
+  },
+  {
+    id: 'testimonial-3',
+    text: 'Profissional extremamente confiável. Recomendo para quem quer segurança e atenção de verdade.',
+    name: 'Fernanda A.',
+    pet: 'Tutora do Billy',
+  },
+];
+
+export function getTestimonials() {
+  return defaultTestimonials;
+}
