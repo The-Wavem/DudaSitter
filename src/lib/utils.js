@@ -94,6 +94,7 @@ export function saveMessage(formData) {
     });
 
     window.localStorage.setItem(messagesKey, JSON.stringify(nextMessages));
+    notifyMessagesUpdated();
   } catch {
     window.localStorage.setItem(
       messagesKey,
@@ -109,6 +110,7 @@ export function saveMessage(formData) {
         },
       ]),
     );
+    notifyMessagesUpdated();
   }
 }
 
@@ -143,6 +145,14 @@ function writeJson(key, value) {
   window.localStorage.setItem(key, JSON.stringify(value));
 }
 
+function notifyMessagesUpdated() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.dispatchEvent(new Event('duda-messages-updated'));
+}
+
 export function getMessages() {
   return readJson(messagesKey, []).map((message, index) => ({
     id: message.id ?? `message-${index}`,
@@ -157,10 +167,12 @@ export function getMessages() {
 
 export function markAsRead(id) {
   writeJson(messagesKey, getMessages().map((message) => (message.id === id ? { ...message, status: 'read' } : message)));
+  notifyMessagesUpdated();
 }
 
 export function deleteMessage(id) {
   writeJson(messagesKey, getMessages().filter((message) => message.id !== id));
+  notifyMessagesUpdated();
 }
 
 export function getAppointments() {

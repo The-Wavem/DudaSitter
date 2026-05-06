@@ -3,9 +3,18 @@
   background: #f8f1e7;
   border-right: 1px solid #eadfce;
   display: flex;
-  flex-direction: column;
-  position: relative;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 50;
   overflow: hidden;
+  border-right: 0;
+  border-top: 1px solid #eadfce;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 -12px 30px rgba(53, 39, 31, 0.08);
 }
 
 .sidebar::before {
@@ -17,11 +26,14 @@
 }
 
 .topSection {
-  padding: 1.5rem;
+  flex: 1;
+  padding: 0;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.brandRow {
+.logoContainer {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -54,25 +66,35 @@
 }
 
 .nav {
-  display: grid;
-  gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.35rem;
+  width: 100%;
 }
 
 .navButton {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  padding: 0.9rem 1rem;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 3rem;
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0;
   border: 0;
-  border-left: 4px solid transparent;
-  border-radius: 0.9rem;
+  border-radius: 1rem;
   background: transparent;
   color: #5d4639;
   font-weight: 600;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
   transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  position: relative;
+}
+
+.navButton svg {
+  flex-shrink: 0;
 }
 
 .navButton:hover {
@@ -82,33 +104,58 @@
 .navButtonActive {
   background: #f6eee4;
   color: #1f1612;
-  border-left-color: #d47a56;
+  border-left-color: transparent;
 }
 
-.navEmoji {
+.navIcon {
   width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navLabel {
   font-size: 0.95rem;
 }
 
+.navBadge {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.15rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .bottomSection {
-  margin-top: auto;
-  padding: 1.5rem;
-  display: grid;
-  gap: 1rem;
+  margin-top: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   position: relative;
 }
 
 .logoutButton {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  padding: 0.9rem 1rem;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 3rem;
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0;
   border: 0;
-  border-radius: 0.9rem;
+  border-radius: 1rem;
   background: #efe5d7;
   color: #5d4639;
   font-weight: 700;
@@ -119,6 +166,10 @@
 .logoutIcon {
   width: 1rem;
   height: 1rem;
+}
+
+.profileContainer {
+  display: none;
 }
 
 .profileCard {
@@ -184,9 +235,113 @@
   background: #eadfce;
 }
 
+.hiddenOnMobile {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .sidebar {
     width: 16rem;
     min-height: 100vh;
+    position: static;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    border-top: 0;
+    border-right: 1px solid #eadfce;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .topSection {
+    display: block;
+    padding: 1.5rem;
+  }
+
+  .logoContainer.hiddenOnMobile {
+    display: flex;
+  }
+
+  .logoContainer {
+    margin-bottom: 1.5rem;
+  }
+
+  .nav {
+    display: grid;
+    gap: 0.5rem;
+    width: auto;
+  }
+
+  .navButton {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border-left: 4px solid transparent;
+    border-radius: 0.9rem;
+    text-align: left;
+  }
+
+  .navButton svg {
+    flex-shrink: 0;
+  }
+
+  .navButtonActive {
+    border-left-color: #d47a56;
+  }
+
+  .navBadge {
+    position: static;
+    margin-left: auto;
+  }
+
+  .bottomSection {
+    margin-top: auto;
+    padding: 1.5rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .logoutButton {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.9rem;
+  }
+
+  .profileContainer {
+    display: block;
+  }
+
+  .profileContainer.hiddenOnMobile {
+    display: block;
+  }
+
+  .navLabel,
+  .logoutButton span {
+    display: inline;
+  }
+}
+
+@media (max-width: 767px) {
+  .logoContainer,
+  .profileContainer,
+  .navLabel,
+  .logoutButton span {
+    display: none;
+  }
+
+  .sidebar::before {
+    opacity: 0.65;
+  }
+
+  .navButtonActive {
+    background: #f5e5bd;
   }
 }

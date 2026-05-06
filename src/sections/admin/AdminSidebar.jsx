@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { LogOut, PawPrint } from 'lucide-react';
+import { CalendarClock, FilePenLine, LogOut, MessageSquare, PawPrint } from 'lucide-react';
+import { getMessages } from '@/lib/utils';
 import styles from './AdminSidebar.module.css';
 
 const navButtonMotion = {
@@ -9,16 +11,29 @@ const navButtonMotion = {
 };
 
 export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) {
+  const [unreadCount, setUnreadCount] = useState(() => getMessages().filter((message) => message.status === 'new').length);
+
   const tabs = [
-    { id: 'messages', label: 'Mensagens', emoji: '💬' },
-    { id: 'agenda', label: 'Agenda Semanal', emoji: '📅' },
-    { id: 'cms', label: 'Editor do Site', emoji: '📝' },
+    { id: 'messages', label: 'Mensagens', icon: MessageSquare },
+    { id: 'agenda', label: 'Agenda Semanal', icon: CalendarClock },
+    { id: 'cms', label: 'Editor do Site', icon: FilePenLine },
   ];
+
+  useEffect(() => {
+    const updateUnreadCount = () => {
+      setUnreadCount(getMessages().filter((message) => message.status === 'new').length);
+    };
+
+    updateUnreadCount();
+    window.addEventListener('duda-messages-updated', updateUnreadCount);
+
+    return () => window.removeEventListener('duda-messages-updated', updateUnreadCount);
+  }, []);
 
   return (
     <aside className={styles.sidebar}>
       <div className={styles.topSection}>
-        <motion.div className={styles.brandRow} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+        <motion.div className={`${styles.logoContainer} ${styles.hiddenOnMobile}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
           <motion.div className={styles.brandMark} whileHover={{ rotate: -4, scale: 1.04 }} whileTap={{ scale: 0.98 }}>
             <span>DS</span>
           </motion.div>
@@ -31,26 +46,29 @@ export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) 
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
+              aria-label={tab.label}
               className={`${styles.navButton} ${activeTab === tab.id ? styles.navButtonActive : ''}`}
               variants={navButtonMotion}
               initial="rest"
               whileHover="hover"
               whileTap="tap"
             >
-              <span className={styles.navEmoji}>{tab.emoji}</span>
+              <tab.icon className={styles.navIcon} aria-hidden="true" />
               <span className={styles.navLabel}>{tab.label}</span>
+              {tab.id === 'messages' && unreadCount > 0 && <span className={styles.navBadge}>{unreadCount}</span>}
             </motion.button>
           ))}
         </nav>
       </div>
 
       <div className={styles.bottomSection}>
-        <motion.button type="button" onClick={handleLogout} className={styles.logoutButton} whileHover={{ y: -1, scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+        <motion.button type="button" onClick={handleLogout} className={styles.logoutButton} aria-label="Sair" whileHover={{ y: -1, scale: 1.01 }} whileTap={{ scale: 0.99 }}>
           <LogOut className={styles.logoutIcon} aria-hidden="true" />
           <span>Sair</span>
         </motion.button>
 
-        <motion.div className={styles.profileCard} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} whileHover={{ y: -2 }}>
+        <motion.div className={`${styles.profileContainer} ${styles.hiddenOnMobile}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} whileHover={{ y: -2 }}>
+          <div className={styles.profileCard}>
           <div className={styles.profileRow}>
             <div className={styles.avatar}><PawPrint className={styles.avatarIcon} aria-hidden="true" /></div>
             <div>
@@ -63,6 +81,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) 
             <span className={styles.progressActive} />
             <span className={styles.progressActive} />
             <span className={styles.progressMuted} />
+          </div>
           </div>
         </motion.div>
       </div>
