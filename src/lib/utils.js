@@ -65,3 +65,14 @@ const defaultTestimonials = [
 export function getTestimonials() {
   return defaultTestimonials;
 }
+
+const defaultAboutData = {
+  age: '22 anos',
+  semester: '5º período',
+  bio: 'Eu sempre fui apaixonada por animais e, com o tempo, transformei esse carinho em profissão.\n\nHoje, aos {age}, curso Medicina Veterinária no {semester} e levo comigo a responsabilidade de cuidar de cada pet com atenção, respeito e muito amor.\n\nMinha rotina é guiada pelo compromisso de oferecer segurança, bem-estar e tranquilidade para os tutores e seus companheiros de quatro patas.',
+  mission: 'Oferecer um cuidado ético, acolhedor e seguro para que cada pet se sinta protegido e cada tutor tenha tranquilidade na sua ausência.',
+};
+
+export function getAboutData() {
+  return defaultAboutData;
+}

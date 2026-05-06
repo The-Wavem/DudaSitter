@@ -1,0 +1,264 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  padding: 4rem 0 5rem;
+  background: #fef8f1;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: center;
+  gap: 3rem;
+}
+
+.imageColumn {
+  position: relative;
+  grid-column: span 12;
+  order: 2;
+}
+
+.imageFrame {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 8px solid #ffffff;
+  border-radius: 3rem;
+  background: #f0e4d6;
+  box-shadow: 0 32px 70px rgba(53, 39, 31, 0.16);
+  transform: none;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.decorPrimary {
+  position: absolute;
+  right: -2rem;
+  bottom: -2rem;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 999px;
+  background: rgba(216, 133, 98, 0.18);
+  filter: blur(48px);
+}
+
+.decorSecondary {
+  position: absolute;
+  left: -1rem;
+  top: 25%;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 32%;
+  background: #7c9f7f;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.decorTertiary {
+  position: absolute;
+  right: 1rem;
+  bottom: 24%;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: #d4a83f;
+}
+
+.textColumn {
+  grid-column: span 12;
+  order: 1;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: #c97f50;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.kickerIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.title {
+  margin: 0 0 1.5rem;
+  color: #1f1612;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.titleAccent {
+  color: #7c9f7f;
+  font-style: italic;
+}
+
+.bio {
+  display: grid;
+  gap: 1.25rem;
+  color: #5d4639;
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+.bio p {
+  margin: 0;
+}
+
+.missionBox {
+  position: relative;
+  margin-top: 2rem;
+  padding: 2rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 2.25rem;
+  background: #ffffff;
+  box-shadow: 0 20px 50px rgba(53, 39, 31, 0.08);
+}
+
+.missionBadge {
+  position: absolute;
+  top: -0.85rem;
+  left: -0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid #ffffff;
+  border-radius: 999px;
+  background: #f5e5bd;
+}
+
+.missionIcon {
+  width: 1.35rem;
+  height: 1.35rem;
+  color: #c97f50;
+}
+
+.missionTitle {
+  margin: 0 0 0.75rem 2.15rem;
+  color: #1f1612;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.missionText {
+  margin: 0;
+  color: #5d4639;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  font-style: italic;
+}
+
+.inlineInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.inlineChip,
+.inlineMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #ebdfd4;
+  color: #5d4639;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.inlineIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #7c9f7f;
+}
+
+.blobPrimary,
+.blobSecondary {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.blobPrimary {
+  top: -6rem;
+  right: -8rem;
+  width: 37.5rem;
+  height: 37.5rem;
+  border-radius: 50%;
+  background: rgba(171, 207, 175, 0.28);
+}
+
+.blobSecondary {
+  left: -7rem;
+  bottom: -8rem;
+  width: 25rem;
+  height: 25rem;
+  border-radius: 28%;
+  background: rgba(252, 195, 143, 0.28);
+}
+
+@media (min-width: 1024px) {
+  .imageColumn {
+    grid-column: span 5;
+    order: 1;
+  }
+
+  .textColumn {
+    grid-column: span 7;
+    order: 2;
+  }
+
+  .imageFrame {
+    transform: rotate(-2deg);
+  }
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 5rem 0 6rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .missionBox {
+    padding: 1.5rem;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
