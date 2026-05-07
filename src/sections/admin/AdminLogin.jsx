@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock } from 'lucide-react';
+import { login } from '@/services/authAPI';
 import styles from './AdminLogin.module.css';
 
 const cardVariants = {
@@ -14,19 +15,26 @@ const cardVariants = {
 };
 
 export default function AdminLogin({ onSuccess }) {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (password === 'admin') {
+    setIsSubmitting(true);
+
+    try {
+      await login(email, password);
       setError('');
       onSuccess();
-      return;
+    } catch (authError) {
+      setError('E-mail ou senha incorretos.');
+      console.error('Erro ao autenticar admin:', authError);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setError('Senha incorreta.');
   };
 
   return (
@@ -46,21 +54,38 @@ export default function AdminLogin({ onSuccess }) {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>
+            <label htmlFor="admin-email" className={styles.label}>E-mail</label>
+            <input
+              id="admin-email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
+              autoFocus
+              required
+              className={styles.input}
+              placeholder="voce@exemplo.com"
+            />
+          </div>
+
+          <div className={styles.field}>
             <label htmlFor="admin-password" className={styles.label}>Senha de Acesso</label>
             <input
               id="admin-password"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              autoFocus
+              autoComplete="current-password"
+              required
               className={styles.input}
               placeholder="••••••"
             />
             {error && <p className={styles.error}>{error}</p>}
-            <p className={styles.hint}>Dica: a senha é admin</p>
           </div>
 
-          <button type="submit" className={styles.submitButton}>Entrar</button>
+          <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+            {isSubmitting ? 'Entrando...' : 'Entrar'}
+          </button>
         </form>
       </motion.div>
     </div>

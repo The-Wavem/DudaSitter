@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import AdminLogin from '@/sections/admin/AdminLogin';
 import AdminSidebar from '@/sections/admin/AdminSidebar';
+import { logout, subscribeToAuthChanges } from '@/services/authAPI';
 import styles from './Admin.module.css';
 
 const AdminMessages = lazy(() => import('@/sections/admin/AdminMessages'));
@@ -41,12 +42,23 @@ function SectionFallback() {
 
 const MotionDiv = motion.div;
 export default function Admin() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('duda_admin_auth') === 'true');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('messages');
 
   useEffect(() => {
+    const unsubscribe = subscribeToAuthChanges((user) => {
+      setIsAuthenticated(Boolean(user));
+      if (user) {
+        setActiveTab('messages');
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
     if (!isAuthenticated) {
-      return;
+      return undefined;
     }
 
     let isActive = true;
@@ -71,14 +83,13 @@ export default function Admin() {
   }, [isAuthenticated]);
 
   const handleLoginSuccess = () => {
-    localStorage.setItem('duda_admin_auth', 'true');
-    setIsAuthenticated(true);
     setActiveTab('messages');
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('duda_admin_auth');
+  const handleLogout = async () => {
+    await logout();
     setIsAuthenticated(false);
+    setActiveTab('messages');
   };
 
   return (

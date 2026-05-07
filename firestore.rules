@@ -7,10 +7,10 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Mensagens: Público pode criar (formulário de contato). Só admin pode ler/atualizar.
+    // Mensagens: Público pode criar (formulário de contato). Só admin pode ler/atualizar/excluir.
     match /messages/{messageId} {
       allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow read, write: if isAdmin();
     }
     
     // Agenda: Apenas admin tem acesso.
