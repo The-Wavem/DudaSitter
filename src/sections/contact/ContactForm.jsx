@@ -14,6 +14,7 @@ export default function ContactForm() {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!submitted) return undefined;
@@ -24,6 +25,7 @@ export default function ContactForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
     try {
       await saveMessage(formData);
@@ -31,6 +33,8 @@ export default function ContactForm() {
       setFormData({ name: '', petName: '', service: 'Pet Sitter (Hospedagem em casa)', message: '' });
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -118,8 +122,9 @@ export default function ContactForm() {
             whileTap={{ scale: 0.95 }}
             type="submit"
             className={styles.submitButton}
+            disabled={isSubmitting}
           >
-            <Send className={styles.submitIcon} aria-hidden="true" /> Enviar Mensagem
+            <Send className={styles.submitIcon} aria-hidden="true" /> {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
           </MotionButton>
         </form>
       </div>

@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Função auxiliar para verificar se é admin logado
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // Mensagens: Público pode criar (formulário de contato). Só admin pode ler/atualizar.
+    match /messages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+    
+    // Agenda: Apenas admin tem acesso.
+    match /appointments/{appointmentId} {
+      allow read, write: if isAdmin();
+    }
+
+    // CMS (Galeria, Depoimentos, Textos): Público pode ler. Só admin pode alterar.
+    match /gallery/{imageId} { allow read: if true; allow write: if isAdmin(); }
+    match /testimonials/{testId} { allow read: if true; allow write: if isAdmin(); }
+    match /settings/{docId} { allow read: if true; allow write: if isAdmin(); }
+  }
+}

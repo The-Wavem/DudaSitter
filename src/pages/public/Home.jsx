@@ -11,19 +11,28 @@ export default function Home() {
   const [activeServiceFilter, setActiveServiceFilter] = useState('Sitter');
   const [galleryImages, setGalleryImages] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let isActive = true;
 
     const loadHomeContent = async () => {
-      const [nextGallery, nextTestimonials] = await Promise.all([getGallery(), getTestimonials()]);
+      try {
+        const [nextGallery, nextTestimonials] = await Promise.all([getGallery(), getTestimonials()]);
 
-      if (!isActive) {
-        return;
+        if (!isActive) {
+          return;
+        }
+
+        setGalleryImages(nextGallery);
+        setTestimonials(nextTestimonials);
+      } catch (error) {
+        console.error('Erro ao carregar conteúdo da home:', error);
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
       }
-
-      setGalleryImages(nextGallery);
-      setTestimonials(nextTestimonials);
     };
 
     loadHomeContent();
@@ -47,13 +56,15 @@ export default function Home() {
       <Hero />
       <WhyChoose />
       <Services onOpenGallery={openGallery} />
-      <Testimonials testimonials={testimonials} />
-      <GalleryModal
-        isOpen={galleryOpen}
-        onClose={() => setGalleryOpen(false)}
-        service={activeServiceFilter}
-        images={filteredImages}
-      />
+      {!isLoading && <Testimonials testimonials={testimonials} />}
+      {!isLoading && (
+        <GalleryModal
+          isOpen={galleryOpen}
+          onClose={() => setGalleryOpen(false)}
+          service={activeServiceFilter}
+          images={filteredImages}
+        />
+      )}
     </>
   );
 }
