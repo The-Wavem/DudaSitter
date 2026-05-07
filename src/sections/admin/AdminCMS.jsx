@@ -12,7 +12,7 @@ import {
   getTestimonials,
   updateAboutData,
   updateContactData,
-} from '@/lib/utils';
+} from '@/services/cmsAPI';
 import styles from './AdminCMS.module.css';
 
 const MotionDiv = motion.div;
@@ -47,41 +47,62 @@ export default function AdminCMS() {
   const [newTestMessage, setNewTestMessage] = useState('');
 
   useEffect(() => {
-    setGallery(getGallery());
-    setTestimonials(getTestimonials());
-    setAboutData(getAboutData());
-    setContactData(getContactData());
+    let isActive = true;
+
+    const loadCmsData = async () => {
+      const [nextGallery, nextTestimonials, nextAboutData, nextContactData] = await Promise.all([
+        getGallery(),
+        getTestimonials(),
+        getAboutData(),
+        getContactData(),
+      ]);
+
+      if (!isActive) {
+        return;
+      }
+
+      setGallery(nextGallery);
+      setTestimonials(nextTestimonials);
+      setAboutData(nextAboutData);
+      setContactData(nextContactData);
+    };
+
+    loadCmsData();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
-  const handleAddImage = (event) => {
+  const handleAddImage = async (event) => {
     event.preventDefault();
     if (!newImgUrl) return;
 
-    addGalleryImage(newImgUrl, newImgService);
-    setGallery(getGallery());
+    await addGalleryImage(newImgUrl, newImgService);
+    setGallery(await getGallery());
     setNewImgUrl('');
   };
 
-  const handleAddTestimonial = (event) => {
+  const handleAddTestimonial = async (event) => {
     event.preventDefault();
     if (!newTestTutor || !newTestPet || !newTestMessage) return;
 
-    addTestimonial({ name: newTestTutor, pet: newTestPet, text: newTestMessage });
-    setTestimonials(getTestimonials());
+    await addTestimonial({ name: newTestTutor, pet: newTestPet, text: newTestMessage });
+    setTestimonials(await getTestimonials());
     setNewTestTutor('');
     setNewTestPet('');
     setNewTestMessage('');
   };
 
-  const handleSaveAbout = (event) => {
+  const handleSaveAbout = async (event) => {
     event.preventDefault();
-    updateAboutData(aboutData);
+    await updateAboutData(aboutData);
     window.alert('Dados salvos com sucesso!');
   };
 
-  const handleSaveContact = (event) => {
+  const handleSaveContact = async (event) => {
     event.preventDefault();
-    updateContactData(contactData);
+    await updateContactData(contactData);
     window.alert('Informações de contato salvas!');
   };
 
@@ -142,7 +163,7 @@ export default function AdminCMS() {
                   <div key={image.id} className={styles.imageCard}>
                     <img src={image.url} alt="Galeria" className={styles.image} />
                     <div className={`${styles.serviceTag} ${image.service === 'Sitter' ? styles.serviceTagSitter : styles.serviceTagWalker}`}>{image.service}</div>
-                    <button type="button" onClick={() => { deleteGalleryImage(image.id); setGallery(getGallery()); }} className={styles.deleteOverlayButton}>
+                    <button type="button" onClick={async () => { await deleteGalleryImage(image.id); setGallery(await getGallery()); }} className={styles.deleteOverlayButton}>
                       <Trash2 className={styles.deleteIcon} aria-hidden="true" />
                     </button>
                   </div>
@@ -190,7 +211,7 @@ export default function AdminCMS() {
                       <p className={styles.testimonialText}>"{testimonial.text}"</p>
                       <p className={styles.testimonialAuthor}>{testimonial.name} <span>({testimonial.pet})</span></p>
                     </div>
-                    <button type="button" onClick={() => { deleteTestimonial(testimonial.id); setTestimonials(getTestimonials()); }} className={styles.deleteMiniButton}>
+                    <button type="button" onClick={async () => { await deleteTestimonial(testimonial.id); setTestimonials(await getTestimonials()); }} className={styles.deleteMiniButton}>
                       <Trash2 className={styles.deleteIcon} aria-hidden="true" />
                     </button>
                   </article>

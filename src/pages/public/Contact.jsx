@@ -2,18 +2,28 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import ContactInfo from '@/sections/contact/ContactInfo';
 import ContactForm from '@/sections/contact/ContactForm';
-import { getContactData } from '@/lib/utils';
+import { getContactData } from '@/services/cmsAPI';
 import styles from './Contact.module.css';
 
 export default function Contact() {
   const [contactData, setContactData] = useState({ whatsapp: '21972229509', instagram: 'dudasitter', introText: '' });
 
   useEffect(() => {
-    const frameId = window.requestAnimationFrame(() => {
-      setContactData(getContactData());
-    });
+    let isActive = true;
 
-    return () => window.cancelAnimationFrame(frameId);
+    const loadContactData = async () => {
+      const nextContactData = await getContactData();
+
+      if (isActive) {
+        setContactData(nextContactData);
+      }
+    };
+
+    loadContactData();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   return (

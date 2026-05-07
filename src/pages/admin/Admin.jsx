@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import AdminLogin from '@/sections/admin/AdminLogin';
 import AdminSidebar from '@/sections/admin/AdminSidebar';
 import styles from './Admin.module.css';
@@ -43,6 +43,32 @@ const MotionDiv = motion.div;
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('duda_admin_auth') === 'true');
   const [activeTab, setActiveTab] = useState('messages');
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    let isActive = true;
+
+    const warmUpDashboard = async () => {
+      await Promise.all([
+        import('@/sections/admin/AdminMessages'),
+        import('@/sections/admin/AdminAgenda'),
+        import('@/sections/admin/AdminCMS'),
+      ]);
+
+      if (!isActive) {
+        return;
+      }
+    };
+
+    warmUpDashboard();
+
+    return () => {
+      isActive = false;
+    };
+  }, [isAuthenticated]);
 
   const handleLoginSuccess = () => {
     localStorage.setItem('duda_admin_auth', 'true');

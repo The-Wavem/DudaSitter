@@ -4,25 +4,39 @@ import WhyChoose from '@/sections/home/WhyChoose';
 import Services from '@/sections/home/Services';
 import GalleryModal from '@/sections/home/GalleryModal';
 import Testimonials from '@/sections/home/Testimonials';
-import { getGallery, getTestimonials } from '@/lib/utils';
+import { getGallery, getTestimonials } from '@/services/cmsAPI';
 
 export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [activeServiceFilter, setActiveServiceFilter] = useState('Sitter');
   const [galleryImages, setGalleryImages] = useState([]);
-  const [testimonials] = useState(() => getTestimonials());
+  const [testimonials, setTestimonials] = useState([]);
 
   useEffect(() => {
-    const frameId = window.requestAnimationFrame(() => {
-      setGalleryImages(getGallery());
-    });
+    let isActive = true;
 
-    return () => window.cancelAnimationFrame(frameId);
+    const loadHomeContent = async () => {
+      const [nextGallery, nextTestimonials] = await Promise.all([getGallery(), getTestimonials()]);
+
+      if (!isActive) {
+        return;
+      }
+
+      setGalleryImages(nextGallery);
+      setTestimonials(nextTestimonials);
+    };
+
+    loadHomeContent();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
-  const openGallery = (service) => {
+  const openGallery = async (service) => {
     setActiveServiceFilter(service);
-    setGalleryImages(getGallery());
+    const nextGallery = await getGallery();
+    setGalleryImages(nextGallery);
     setGalleryOpen(true);
   };
 

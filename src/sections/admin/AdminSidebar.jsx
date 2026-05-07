@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { CalendarClock, FilePenLine, LogOut, MessageSquare, PawPrint } from 'lucide-react';
-import { getMessages } from '@/lib/utils';
+import { getMessages } from '@/services/messagesAPI';
 import styles from './AdminSidebar.module.css';
 
 const navButtonMotion = {
@@ -11,7 +11,7 @@ const navButtonMotion = {
 };
 
 export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) {
-  const [unreadCount, setUnreadCount] = useState(() => getMessages().filter((message) => message.status === 'new').length);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const tabs = [
     { id: 'messages', label: 'Mensagens', icon: MessageSquare },
@@ -20,14 +20,25 @@ export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) 
   ];
 
   useEffect(() => {
-    const updateUnreadCount = () => {
-      setUnreadCount(getMessages().filter((message) => message.status === 'new').length);
+    let isActive = true;
+
+    const updateUnreadCount = async () => {
+      const nextMessages = await getMessages();
+
+      if (!isActive) {
+        return;
+      }
+
+      setUnreadCount(nextMessages.filter((message) => message.status === 'new').length);
     };
 
     updateUnreadCount();
     window.addEventListener('duda-messages-updated', updateUnreadCount);
 
-    return () => window.removeEventListener('duda-messages-updated', updateUnreadCount);
+    return () => {
+      isActive = false;
+      window.removeEventListener('duda-messages-updated', updateUnreadCount);
+    };
   }, []);
 
   return (
@@ -69,19 +80,19 @@ export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) 
 
         <motion.div className={`${styles.profileContainer} ${styles.hiddenOnMobile}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} whileHover={{ y: -2 }}>
           <div className={styles.profileCard}>
-          <div className={styles.profileRow}>
-            <div className={styles.avatar}><PawPrint className={styles.avatarIcon} aria-hidden="true" /></div>
-            <div>
-              <p className={styles.profileName}>Maria Eduarda</p>
-              <p className={styles.profileRole}>Med. Veterinária</p>
+            <div className={styles.profileRow}>
+              <div className={styles.avatar}><PawPrint className={styles.avatarIcon} aria-hidden="true" /></div>
+              <div>
+                <p className={styles.profileName}>Maria Eduarda</p>
+                <p className={styles.profileRole}>Med. Veterinária</p>
+              </div>
             </div>
-          </div>
 
-          <div className={styles.progressRow}>
-            <span className={styles.progressActive} />
-            <span className={styles.progressActive} />
-            <span className={styles.progressMuted} />
-          </div>
+            <div className={styles.progressRow}>
+              <span className={styles.progressActive} />
+              <span className={styles.progressActive} />
+              <span className={styles.progressMuted} />
+            </div>
           </div>
         </motion.div>
       </div>

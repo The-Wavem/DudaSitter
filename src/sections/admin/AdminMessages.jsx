@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CalendarPlus, Check, Circle, MessageSquare, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { deleteMessage, getMessages, markAsRead } from '@/lib/utils';
+import { deleteMessage, getMessages, markAsRead } from '@/services/messagesAPI';
 import styles from './AdminMessages.module.css';
 
 const MotionDiv = motion.div;
@@ -29,17 +29,31 @@ export default function AdminMessages({ onOpenAgenda = () => {} }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    setMessages(getMessages());
+    let isActive = true;
+
+    const loadMessages = async () => {
+      const nextMessages = await getMessages();
+
+      if (isActive) {
+        setMessages(nextMessages);
+      }
+    };
+
+    loadMessages();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
-  const handleMarkAsRead = (id) => {
-    markAsRead(id);
-    setMessages(getMessages());
+  const handleMarkAsRead = async (id) => {
+    await markAsRead(id);
+    setMessages(await getMessages());
   };
 
-  const handleDeleteMessage = (id) => {
-    deleteMessage(id);
-    setMessages(getMessages());
+  const handleDeleteMessage = async (id) => {
+    await deleteMessage(id);
+    setMessages(await getMessages());
   };
 
   return (

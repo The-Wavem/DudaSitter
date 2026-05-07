@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle2, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { saveMessage } from '@/lib/utils';
+import { saveMessage } from '@/services/messagesAPI';
 import styles from './ContactForm.module.css';
 
 const MotionButton = motion.button;
@@ -22,11 +22,16 @@ export default function ContactForm() {
     return () => window.clearTimeout(timeoutId);
   }, [submitted]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    saveMessage(formData);
-    setSubmitted(true);
-    setFormData({ name: '', petName: '', service: 'Pet Sitter (Hospedagem em casa)', message: '' });
+
+    try {
+      await saveMessage(formData);
+      setSubmitted(true);
+      setFormData({ name: '', petName: '', service: 'Pet Sitter (Hospedagem em casa)', message: '' });
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+    }
   };
 
   const handleChange = (event) => {
