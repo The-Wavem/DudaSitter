@@ -21,7 +21,8 @@ export default function Navbar() {
 				<div className={styles.topBar}>
 					<div className={styles.brandArea}>
 						<Link to="/" className={styles.brandLink} onClick={() => setIsOpen(false)}>
-							<PawPrint className={styles.brandIcon} aria-hidden="true" />
+							{/* <PawPrint className={styles.brandIcon} aria-hidden="true" /> */}
+                            <img src="/favicon-32x32.png" alt="Logo Duda Sitter" className={styles.brandIcon} />
 							<span className={styles.brandText}>Duda Sitter</span>
 						</Link>
 					</div>
