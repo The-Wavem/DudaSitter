@@ -51,6 +51,7 @@ export default function Admin() {
   const [messages, setMessages] = useState([]);
   const [isMessagesLoading, setIsMessagesLoading] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const refreshMessages = useCallback(async () => {
     setIsMessagesLoading(true);
@@ -151,7 +152,13 @@ export default function Admin() {
         </MotionDiv>
       ) : (
         <MotionDiv key="dashboard" className={styles.layout} variants={pageVariants} initial="hidden" animate="visible" exit="exit">
-          <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} handleLogout={handleLogoutRequest} />
+          <AdminSidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            handleLogout={handleLogoutRequest}
+            isCollapsed={isSidebarCollapsed}
+            onToggleCollapse={() => setIsSidebarCollapsed((current) => !current)}
+          />
 
           <main className={styles.main}>
             <Suspense fallback={<SectionFallback />}>

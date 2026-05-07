@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CalendarPlus, Check, Circle, MessageSquare, Trash2 } from 'lucide-react';
+import { CalendarPlus, Check, Circle, MessageSquare, Search, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { deleteMessage, markAsRead } from '@/services/messagesAPI';
@@ -28,6 +28,16 @@ const itemVariants = {
 
 export default function AdminMessages({ messages = [], isLoading = false, onOpenAgenda = () => {}, onRefreshMessages = async () => {} }) {
   const [isActionLoading, setIsActionLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  const filteredMessages = messages.filter((message) => {
+    const normalizedSearchTerm = searchTerm.toLowerCase();
+
+    return [message.name, message.petName, message.message].some((field) => field.toLowerCase().includes(normalizedSearchTerm));
+  });
+
+  const visibleMessages = filteredMessages.slice(0, visibleCount);
 
   if (isLoading) {
     return (
@@ -75,6 +85,11 @@ export default function AdminMessages({ messages = [], isLoading = false, onOpen
     }
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setVisibleCount(3);
+  };
+
   return (
     <section className={styles.section}>
       <header className={styles.header}>
@@ -84,14 +99,31 @@ export default function AdminMessages({ messages = [], isLoading = false, onOpen
         </div>
       </header>
 
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} aria-hidden="true" />
+        <input
+          type="search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className={styles.searchInput}
+          placeholder="Buscar por nome, pet ou mensagem"
+          aria-label="Buscar mensagens"
+        />
+      </div>
+
       {messages.length === 0 ? (
         <MotionDiv className={styles.emptyState} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
           <MessageSquare className={styles.emptyIcon} aria-hidden="true" />
           <p className={styles.emptyText}>Nenhuma mensagem no momento.</p>
         </MotionDiv>
+      ) : filteredMessages.length === 0 ? (
+        <MotionDiv className={styles.emptyState} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+          <Search className={styles.emptyIcon} aria-hidden="true" />
+          <p className={styles.emptyText}>Nenhuma mensagem encontrada para essa busca.</p>
+        </MotionDiv>
       ) : (
         <MotionDiv className={styles.list} variants={listVariants} initial="hidden" animate="show">
-          {messages.map((message) => {
+          {visibleMessages.map((message) => {
             const isNew = message.status === 'new';
 
             return (
@@ -138,6 +170,14 @@ export default function AdminMessages({ messages = [], isLoading = false, onOpen
               </MotionDiv>
             );
           })}
+
+          {visibleCount < filteredMessages.length && (
+            <div className={styles.loadMoreWrap}>
+              <button type="button" className={styles.loadMoreButton} onClick={() => setVisibleCount((current) => current + 3)}>
+                Carregar mais mensagens
+              </button>
+            </div>
+          )}
         </MotionDiv>
       )}
     </section>

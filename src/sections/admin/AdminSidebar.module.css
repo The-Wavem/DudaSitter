@@ -26,6 +26,9 @@
 }
 
 .topSection {
+  .collapseButton {
+    display: none;
+  }
   flex: 1;
   padding: 0;
   position: relative;
@@ -82,6 +85,63 @@
   min-width: 3rem;
   height: 3rem;
   padding: 0;
+    .collapseButton {
+      position: absolute;
+      top: 1rem;
+      right: -0.85rem;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      border: 1px solid #e2d5c4;
+      border-radius: 999px;
+      background: #fffaf4;
+      color: #8c4f2a;
+      box-shadow: 0 10px 20px rgba(53, 39, 31, 0.08);
+      cursor: pointer;
+    }
+
+    .collapseIcon {
+      width: 0.95rem;
+      height: 0.95rem;
+    }
+
+    .sidebarCollapsed {
+      width: 5rem;
+    }
+
+    .sidebarCollapsed .logoContainer {
+      justify-content: center;
+    }
+
+    .sidebarCollapsed .brandMark {
+      margin: 0 auto;
+    }
+
+    .sidebarCollapsed .navButton {
+      width: 3rem;
+      padding: 0.9rem;
+      justify-content: center;
+    }
+
+    .sidebarCollapsed .navButton svg {
+      margin: 0;
+    }
+
+    .sidebarCollapsed .logoutButton {
+      width: 3rem;
+      justify-content: center;
+      padding: 0.9rem;
+    }
+
+    .sidebarCollapsed .navLabel,
+    .sidebarCollapsed .logoutButton span,
+    .sidebarCollapsed .brandTitle,
+    .sidebarCollapsed .profileContainer {
+      display: none;
+    }
   border: 0;
   border-radius: 1rem;
   background: transparent;
@@ -243,7 +303,7 @@
   .sidebar {
     width: 16rem;
     min-height: 100vh;
-    position: static;
+    position: relative;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;

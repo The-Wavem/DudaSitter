@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Calendar as CalendarIcon, CalendarPlus, Check, ExternalLink, X } from 'lucide-react';
+import { Calendar as CalendarIcon, CalendarPlus, Check, ExternalLink, Search, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -33,6 +33,8 @@ const itemVariants = {
 
 export default function AdminAgenda() {
   const [appointments, setAppointments] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [visibleCount, setVisibleCount] = useState(3);
   const [newAppTutor, setNewAppTutor] = useState('');
   const [newAppPet, setNewAppPet] = useState('');
   const [newAppService, setNewAppService] = useState('Pet Sitter (Hospedagem em casa)');
@@ -63,6 +65,14 @@ export default function AdminAgenda() {
       isActive = false;
     };
   }, []);
+
+  const filteredAppointments = appointments.filter((appointment) => {
+    const normalizedSearchTerm = searchTerm.toLowerCase();
+
+    return [appointment.tutorName, appointment.petName].some((field) => field.toLowerCase().includes(normalizedSearchTerm));
+  });
+
+  const visibleAppointments = filteredAppointments.slice(0, visibleCount);
 
   const handleSaveAppointment = async (event) => {
     event.preventDefault();
@@ -100,6 +110,11 @@ export default function AdminAgenda() {
     }
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setVisibleCount(3);
+  };
+
   const getFriendlyDate = (dateStr, timeStr) => {
     try {
       const [year, month, day] = dateStr.split('-');
@@ -130,6 +145,18 @@ export default function AdminAgenda() {
           <p className={styles.subtitle}>Gerencie seus horários de passeios e visitas.</p>
         </div>
       </header>
+
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} aria-hidden="true" />
+        <input
+          type="search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className={styles.searchInput}
+          placeholder="Buscar por tutor ou pet"
+          aria-label="Buscar agendamentos"
+        />
+      </div>
 
       <MotionDiv className={styles.summaryCard} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} whileHover={{ y: -2 }}>
         <div className={styles.summaryIconWrap}>
@@ -198,8 +225,13 @@ export default function AdminAgenda() {
               <CalendarIcon className={styles.emptyIcon} aria-hidden="true" />
               <p className={styles.emptyText}>Nenhum compromisso marcado.</p>
             </MotionDiv>
+          ) : filteredAppointments.length === 0 ? (
+            <MotionDiv className={styles.emptyState} variants={itemVariants}>
+              <Search className={styles.emptyIcon} aria-hidden="true" />
+              <p className={styles.emptyText}>Nenhum agendamento encontrado para essa busca.</p>
+            </MotionDiv>
           ) : (
-            appointments.map((appointment) => (
+            visibleAppointments.map((appointment) => (
               <MotionDiv key={appointment.id} variants={itemVariants} whileHover={{ y: -2 }} className={`${styles.timelineCard} ${appointment.status === 'scheduled' ? styles.timelineCardActive : styles.timelineCardMuted}`}>
                 <div className={styles.timelineTop}>
                   <div>
@@ -253,6 +285,14 @@ export default function AdminAgenda() {
                 </div>
               </MotionDiv>
             ))
+          )}
+
+          {visibleCount < filteredAppointments.length && (
+            <div className={styles.loadMoreWrap}>
+              <button type="button" className={styles.loadMoreButton} onClick={() => setVisibleCount((current) => current + 3)}>
+                Carregar mais agendamentos
+              </button>
+            </div>
           )}
         </MotionDiv>
       </div>

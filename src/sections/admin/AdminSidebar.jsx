@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { CalendarClock, FilePenLine, LogOut, MessageSquare, PawPrint } from 'lucide-react';
+import { CalendarClock, ChevronLeft, ChevronRight, FilePenLine, LogOut, MessageSquare, PawPrint } from 'lucide-react';
 import { getMessages } from '@/services/messagesAPI';
 import styles from './AdminSidebar.module.css';
 
@@ -10,7 +10,7 @@ const navButtonMotion = {
   tap: { scale: 0.99 },
 };
 
-export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) {
+export default function AdminSidebar({ activeTab, setActiveTab, handleLogout, isCollapsed = false, onToggleCollapse = () => {} }) {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const tabs = [
@@ -42,7 +42,16 @@ export default function AdminSidebar({ activeTab, setActiveTab, handleLogout }) 
   }, []);
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ''}`}>
+      <button
+        type="button"
+        onClick={onToggleCollapse}
+        className={styles.collapseButton}
+        aria-label={isCollapsed ? 'Abrir navegação' : 'Ocultar navegação'}
+      >
+        {isCollapsed ? <ChevronRight className={styles.collapseIcon} aria-hidden="true" /> : <ChevronLeft className={styles.collapseIcon} aria-hidden="true" />}
+      </button>
+
       <div className={styles.topSection}>
         <motion.div className={`${styles.logoContainer} ${styles.hiddenOnMobile}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
           <motion.div className={styles.brandMark} whileHover={{ rotate: -4, scale: 1.04 }} whileTap={{ scale: 0.98 }}>
