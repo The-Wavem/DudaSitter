@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Calendar as CalendarIcon, CalendarPlus, Check, ExternalLink, Search, X } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { format } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Calendar as CalendarIcon, CalendarPlus, Check, ExternalLink, Plus, Search, X } from 'lucide-react';
+import { format, endOfDay, parseISO, startOfDay } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -34,7 +34,10 @@ const itemVariants = {
 export default function AdminAgenda() {
   const [appointments, setAppointments] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterStartDate, setFilterStartDate] = useState(null);
+  const [filterEndDate, setFilterEndDate] = useState(null);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [newAppTutor, setNewAppTutor] = useState('');
   const [newAppPet, setNewAppPet] = useState('');
   const [newAppService, setNewAppService] = useState('Pet Sitter (Hospedagem em casa)');
@@ -68,8 +71,12 @@ export default function AdminAgenda() {
 
   const filteredAppointments = appointments.filter((appointment) => {
     const normalizedSearchTerm = searchTerm.toLowerCase();
+    const appointmentDate = parseISO(appointment.date);
+    const matchesText = [appointment.tutorName, appointment.petName].some((field) => field.toLowerCase().includes(normalizedSearchTerm));
+    const matchesStartDate = !filterStartDate || appointmentDate >= startOfDay(filterStartDate);
+    const matchesEndDate = !filterEndDate || appointmentDate <= endOfDay(filterEndDate);
 
-    return [appointment.tutorName, appointment.petName].some((field) => field.toLowerCase().includes(normalizedSearchTerm));
+    return matchesText && matchesStartDate && matchesEndDate;
   });
 
   const visibleAppointments = filteredAppointments.slice(0, visibleCount);
@@ -103,6 +110,7 @@ export default function AdminAgenda() {
       setStartTime(new Date());
       setEndTime(new Date());
       setNewAppNotes('');
+      setIsModalOpen(false);
       toast.success('Agendamento salvo com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar agendamento:', error);
@@ -112,6 +120,23 @@ export default function AdminAgenda() {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    setVisibleCount(3);
+  };
+
+  const handleStartDateChange = (date) => {
+    setFilterStartDate(date ? startOfDay(date) : null);
+    setVisibleCount(3);
+  };
+
+  const handleEndDateChange = (date) => {
+    setFilterEndDate(date ? endOfDay(date) : null);
+    setVisibleCount(3);
+  };
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setFilterStartDate(null);
+    setFilterEndDate(null);
     setVisibleCount(3);
   };
 
@@ -144,18 +169,47 @@ export default function AdminAgenda() {
           <h2 className={styles.title}>Agenda</h2>
           <p className={styles.subtitle}>Gerencie seus horários de passeios e visitas.</p>
         </div>
+
+        <button type="button" className={styles.fabButton} onClick={() => setIsModalOpen(true)}>
+          <Plus className={styles.fabIcon} aria-hidden="true" />
+          <span>Novo Agendamento</span>
+        </button>
       </header>
 
-      <div className={styles.searchContainer}>
-        <Search className={styles.searchIcon} aria-hidden="true" />
-        <input
-          type="search"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className={styles.searchInput}
-          placeholder="Buscar por tutor ou pet"
-          aria-label="Buscar agendamentos"
-        />
+      <div className={styles.filterRow}>
+        <div className={styles.searchContainer}>
+          <Search className={styles.searchIcon} aria-hidden="true" />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className={styles.searchInput}
+            placeholder="Buscar por tutor ou pet"
+            aria-label="Buscar agendamentos"
+          />
+        </div>
+
+        <div className={styles.dateFilters}>
+          <DatePicker
+            selected={filterStartDate}
+            onChange={handleStartDateChange}
+            dateFormat="dd/MM/yyyy"
+            locale="pt-BR"
+            placeholderText="Data Inicial"
+            className={styles.searchInput}
+          />
+          <DatePicker
+            selected={filterEndDate}
+            onChange={handleEndDateChange}
+            dateFormat="dd/MM/yyyy"
+            locale="pt-BR"
+            placeholderText="Data Final"
+            className={styles.searchInput}
+          />
+          <button type="button" className={styles.clearFiltersButton} onClick={handleClearFilters}>
+            Limpar Filtros
+          </button>
+        </div>
       </div>
 
       <MotionDiv className={styles.summaryCard} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} whileHover={{ y: -2 }}>
@@ -169,56 +223,6 @@ export default function AdminAgenda() {
       </MotionDiv>
 
       <div className={styles.grid}>
-        <MotionDiv className={styles.formCard} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} whileHover={{ y: -2 }}>
-          <h3 className={styles.sectionTitle}>
-            <CalendarPlus className={styles.sectionTitleIcon} aria-hidden="true" /> Novo Agendamento
-          </h3>
-
-          <form onSubmit={handleSaveAppointment} className={styles.form}>
-            <div className={styles.doubleField}>
-              <div className={styles.field}>
-                <label className={styles.label}>Tutor</label>
-                <input type="text" required value={newAppTutor} onChange={(event) => setNewAppTutor(event.target.value)} className={styles.input} placeholder="Nome" />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>Pet</label>
-                <input type="text" required value={newAppPet} onChange={(event) => setNewAppPet(event.target.value)} className={styles.input} placeholder="Pet e Raça" />
-              </div>
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label}>Serviço</label>
-              <select required value={newAppService} onChange={(event) => setNewAppService(event.target.value)} className={styles.select}>
-                <option value="Pet Sitter (Hospedagem em casa)">Pet Sitter (Hospedagem em casa)</option>
-                <option value="Dog Walker (Passeios)">Dog Walker (Passeios)</option>
-              </select>
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label}>Data</label>
-              <DatePicker selected={selectedDate} onChange={(date) => setSelectedDate(date || new Date())} dateFormat="dd/MM/yyyy" locale="pt-BR" className={styles.customDatePicker} />
-            </div>
-
-            <div className={styles.doubleField}>
-              <div className={styles.field}>
-                <label className={styles.label}>Início</label>
-                <DatePicker selected={startTime} onChange={(time) => setStartTime(time || new Date())} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Hora" dateFormat="HH:mm" locale="pt-BR" className={styles.customDatePicker} />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>Término</label>
-                <DatePicker selected={endTime} onChange={(time) => setEndTime(time || new Date())} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Hora" dateFormat="HH:mm" locale="pt-BR" className={styles.customDatePicker} />
-              </div>
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label}>Notas / Endereço</label>
-              <textarea rows={2} value={newAppNotes} onChange={(event) => setNewAppNotes(event.target.value)} className={styles.textarea} placeholder="Instruções extra..." />
-            </div>
-
-            <button type="submit" className={styles.saveButton}>Salvar Agendamento</button>
-          </form>
-        </MotionDiv>
-
         <MotionDiv className={styles.timeline} variants={containerVariants} initial="hidden" animate="show">
           {appointments.length === 0 ? (
             <MotionDiv className={styles.emptyState} variants={itemVariants}>
@@ -232,7 +236,12 @@ export default function AdminAgenda() {
             </MotionDiv>
           ) : (
             visibleAppointments.map((appointment) => (
-              <MotionDiv key={appointment.id} variants={itemVariants} whileHover={{ y: -2 }} className={`${styles.timelineCard} ${appointment.status === 'scheduled' ? styles.timelineCardActive : styles.timelineCardMuted}`}>
+              <MotionDiv
+                key={appointment.id}
+                variants={itemVariants}
+                whileHover={{ y: -2 }}
+                className={`${styles.timelineCard} ${appointment.status === 'scheduled' ? styles.timelineCardActive : styles.timelineCardMuted}`}
+              >
                 <div className={styles.timelineTop}>
                   <div>
                     <span className={styles.badge}>{getFriendlyDate(appointment.date, appointment.startTime)} - {appointment.endTime}</span>
@@ -252,28 +261,36 @@ export default function AdminAgenda() {
                 <div className={styles.actions}>
                   {appointment.status === 'scheduled' ? (
                     <>
-                      <button type="button" onClick={async () => {
-                        try {
-                          await updateAppointmentStatus(appointment.id, 'completed');
-                          setAppointments(await getAppointments());
-                          toast.success('Agendamento concluído com sucesso!');
-                        } catch (error) {
-                          console.error('Erro ao concluir agendamento:', error);
-                          toast.error('Ocorreu um erro. Tente novamente.');
-                        }
-                      }} className={styles.completeButton}>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            await updateAppointmentStatus(appointment.id, 'completed');
+                            setAppointments(await getAppointments());
+                            toast.success('Agendamento concluído com sucesso!');
+                          } catch (error) {
+                            console.error('Erro ao concluir agendamento:', error);
+                            toast.error('Ocorreu um erro. Tente novamente.');
+                          }
+                        }}
+                        className={styles.completeButton}
+                      >
                         <Check className={styles.actionIcon} aria-hidden="true" /> Concluir
                       </button>
-                      <button type="button" onClick={async () => {
-                        try {
-                          await updateAppointmentStatus(appointment.id, 'cancelled');
-                          setAppointments(await getAppointments());
-                          toast.success('Agendamento cancelado com sucesso!');
-                        } catch (error) {
-                          console.error('Erro ao cancelar agendamento:', error);
-                          toast.error('Ocorreu um erro. Tente novamente.');
-                        }
-                      }} className={styles.cancelButton}>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            await updateAppointmentStatus(appointment.id, 'cancelled');
+                            setAppointments(await getAppointments());
+                            toast.success('Agendamento cancelado com sucesso!');
+                          } catch (error) {
+                            console.error('Erro ao cancelar agendamento:', error);
+                            toast.error('Ocorreu um erro. Tente novamente.');
+                          }
+                        }}
+                        className={styles.cancelButton}
+                      >
                         <X className={styles.actionIcon} aria-hidden="true" /> Cancelar
                       </button>
                     </>
@@ -296,6 +313,82 @@ export default function AdminAgenda() {
           )}
         </MotionDiv>
       </div>
+
+      <AnimatePresence>
+        {isModalOpen && (
+          <MotionDiv
+            className={styles.modalOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsModalOpen(false)}
+          >
+            <MotionDiv
+              className={styles.modalContent}
+              initial={{ scale: 0.96, opacity: 0, y: 16 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.96, opacity: 0, y: 16 }}
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.35 }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className={styles.modalHeader}>
+                <div>
+                  <h3 className={styles.modalTitle}>Novo Agendamento</h3>
+                  <p className={styles.modalSubtitle}>Crie um novo compromisso sem sair da agenda.</p>
+                </div>
+
+                <button type="button" onClick={() => setIsModalOpen(false)} className={styles.modalCloseButton} aria-label="Fechar modal">
+                  <X className={styles.modalCloseIcon} aria-hidden="true" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveAppointment} className={styles.form}>
+                <div className={styles.doubleField}>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Tutor</label>
+                    <input type="text" required value={newAppTutor} onChange={(event) => setNewAppTutor(event.target.value)} className={styles.input} placeholder="Nome" />
+                  </div>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Pet</label>
+                    <input type="text" required value={newAppPet} onChange={(event) => setNewAppPet(event.target.value)} className={styles.input} placeholder="Pet e Raça" />
+                  </div>
+                </div>
+
+                <div className={styles.field}>
+                  <label className={styles.label}>Serviço</label>
+                  <select required value={newAppService} onChange={(event) => setNewAppService(event.target.value)} className={styles.select}>
+                    <option value="Pet Sitter (Hospedagem em casa)">Pet Sitter (Hospedagem em casa)</option>
+                    <option value="Dog Walker (Passeios)">Dog Walker (Passeios)</option>
+                  </select>
+                </div>
+
+                <div className={styles.field}>
+                  <label className={styles.label}>Data</label>
+                  <DatePicker selected={selectedDate} onChange={(date) => setSelectedDate(date || new Date())} dateFormat="dd/MM/yyyy" locale="pt-BR" className={styles.customDatePicker} />
+                </div>
+
+                <div className={styles.doubleField}>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Início</label>
+                    <DatePicker selected={startTime} onChange={(time) => setStartTime(time || new Date())} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Hora" dateFormat="HH:mm" locale="pt-BR" className={styles.customDatePicker} />
+                  </div>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Término</label>
+                    <DatePicker selected={endTime} onChange={(time) => setEndTime(time || new Date())} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Hora" dateFormat="HH:mm" locale="pt-BR" className={styles.customDatePicker} />
+                  </div>
+                </div>
+
+                <div className={styles.field}>
+                  <label className={styles.label}>Notas / Endereço</label>
+                  <textarea rows={2} value={newAppNotes} onChange={(event) => setNewAppNotes(event.target.value)} className={styles.textarea} placeholder="Instruções extra..." />
+                </div>
+
+                <button type="submit" className={styles.saveButton}>Salvar Agendamento</button>
+              </form>
+            </MotionDiv>
+          </MotionDiv>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -1,7 +1,8 @@
 .sidebar {
   width: 100%;
   background: #f8f1e7;
-  border-right: 1px solid #eadfce;
+  border-right: 0;
+  border-top: 1px solid #eadfce;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -11,8 +12,6 @@
   bottom: 0;
   z-index: 50;
   overflow: hidden;
-  border-right: 0;
-  border-top: 1px solid #eadfce;
   padding: 0.5rem 0.75rem;
   box-shadow: 0 -12px 30px rgba(53, 39, 31, 0.08);
 }
@@ -21,14 +20,17 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(245, 230, 217, 0.95), transparent 34%), radial-gradient(circle at bottom right, rgba(124, 159, 127, 0.12), transparent 30%);
+  background:
+    radial-gradient(circle at top left, rgba(245, 230, 217, 0.95), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(124, 159, 127, 0.12), transparent 30%);
   pointer-events: none;
 }
 
+.collapseButton {
+  display: none;
+}
+
 .topSection {
-  .collapseButton {
-    display: none;
-  }
   flex: 1;
   padding: 0;
   position: relative;
@@ -85,63 +87,6 @@
   min-width: 3rem;
   height: 3rem;
   padding: 0;
-    .collapseButton {
-      position: absolute;
-      top: 1rem;
-      right: -0.85rem;
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 1.75rem;
-      height: 1.75rem;
-      border: 1px solid #e2d5c4;
-      border-radius: 999px;
-      background: #fffaf4;
-      color: #8c4f2a;
-      box-shadow: 0 10px 20px rgba(53, 39, 31, 0.08);
-      cursor: pointer;
-    }
-
-    .collapseIcon {
-      width: 0.95rem;
-      height: 0.95rem;
-    }
-
-    .sidebarCollapsed {
-      width: 5rem;
-    }
-
-    .sidebarCollapsed .logoContainer {
-      justify-content: center;
-    }
-
-    .sidebarCollapsed .brandMark {
-      margin: 0 auto;
-    }
-
-    .sidebarCollapsed .navButton {
-      width: 3rem;
-      padding: 0.9rem;
-      justify-content: center;
-    }
-
-    .sidebarCollapsed .navButton svg {
-      margin: 0;
-    }
-
-    .sidebarCollapsed .logoutButton {
-      width: 3rem;
-      justify-content: center;
-      padding: 0.9rem;
-    }
-
-    .sidebarCollapsed .navLabel,
-    .sidebarCollapsed .logoutButton span,
-    .sidebarCollapsed .brandTitle,
-    .sidebarCollapsed .profileContainer {
-      display: none;
-    }
   border: 0;
   border-radius: 1rem;
   background: transparent;
@@ -149,7 +94,7 @@
   font-weight: 600;
   text-align: center;
   cursor: pointer;
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 180ms ease;
   position: relative;
 }
 
@@ -299,6 +244,20 @@
   display: none;
 }
 
+.sidebarCollapsed .brandTitle,
+.sidebarCollapsed .navLabel,
+.sidebarCollapsed .logoutButton span,
+.sidebarCollapsed .profileContainer {
+  display: none;
+}
+
+.sidebarCollapsed .navBadge {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.15rem;
+  margin-left: 0;
+}
+
 @media (min-width: 768px) {
   .sidebar {
     width: 16rem;
@@ -311,11 +270,37 @@
     border-right: 1px solid #eadfce;
     padding: 0;
     box-shadow: none;
+    transition: width 180ms ease;
+    overflow: visible;
+  }
+
+  .collapseButton {
+    position: absolute;
+    top: 1rem;
+    right: -0.85rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid #e2d5c4;
+    border-radius: 999px;
+    background: #fffaf4;
+    color: #8c4f2a;
+    box-shadow: 0 10px 20px rgba(53, 39, 31, 0.08);
+    cursor: pointer;
+  }
+
+  .collapseIcon {
+    width: 0.95rem;
+    height: 0.95rem;
   }
 
   .topSection {
     display: block;
     padding: 1.5rem;
+    transition: padding 180ms ease;
   }
 
   .logoContainer.hiddenOnMobile {
@@ -363,6 +348,7 @@
     padding: 1.5rem;
     display: grid;
     gap: 1rem;
+    transition: padding 180ms ease;
   }
 
   .logoutButton {
@@ -386,6 +372,47 @@
   .navLabel,
   .logoutButton span {
     display: inline;
+  }
+
+  .sidebarCollapsed {
+    width: 5rem;
+  }
+
+  .sidebarCollapsed .topSection,
+  .sidebarCollapsed .bottomSection {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .sidebarCollapsed .logoContainer {
+    justify-content: center;
+  }
+
+  .sidebarCollapsed .brandMark {
+    margin: 0 auto;
+  }
+
+  .sidebarCollapsed .navButton {
+    width: 3rem;
+    padding: 0.9rem;
+    justify-content: center;
+  }
+
+  .sidebarCollapsed .navButton svg {
+    margin: 0;
+  }
+
+  .sidebarCollapsed .logoutButton {
+    width: 3rem;
+    justify-content: center;
+    padding: 0.9rem;
+  }
+
+  .sidebarCollapsed .navLabel,
+  .sidebarCollapsed .logoutButton span,
+  .sidebarCollapsed .brandTitle,
+  .sidebarCollapsed .profileContainer {
+    display: none;
   }
 }
 
