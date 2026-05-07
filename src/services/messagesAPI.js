@@ -4,8 +4,6 @@ import {
   deleteDoc,
   doc,
   getDocs,
-  orderBy,
-  query,
   updateDoc,
 } from 'firebase/firestore';
 import { db } from './firebase';
@@ -34,9 +32,19 @@ function normalizeMessage(messageDoc, index) {
   };
 }
 
+function getMessageTimestamp(message) {
+  const value = message.date || message.createdAt || '';
+  const timestamp = new Date(value).getTime();
+
+  return Number.isNaN(timestamp) ? 0 : timestamp;
+}
+
 export async function getMessages() {
-  const snapshot = await getDocs(query(messagesCollection, orderBy('date', 'desc')));
-  return snapshot.docs.map(normalizeMessage);
+  const snapshot = await getDocs(messagesCollection);
+
+  return snapshot.docs
+    .map(normalizeMessage)
+    .sort((firstMessage, secondMessage) => getMessageTimestamp(secondMessage) - getMessageTimestamp(firstMessage));
 }
 
 export async function saveMessage(formData) {

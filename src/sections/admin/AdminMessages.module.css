@@ -46,6 +46,18 @@
   font-size: 1rem;
 }
 
+.loadingState {
+  min-height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 1px solid #ebdfd4;
+  border-radius: 2rem;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf4 100%);
+}
+
 .list {
   display: grid;
   gap: 1rem;

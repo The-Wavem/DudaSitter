@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CalendarPlus, Check, Circle, MessageSquare, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { deleteMessage, getMessages, markAsRead } from '@/services/messagesAPI';
+import toast from 'react-hot-toast';
+import { deleteMessage, markAsRead } from '@/services/messagesAPI';
 import styles from './AdminMessages.module.css';
 
 const MotionDiv = motion.div;
@@ -25,35 +26,53 @@ const itemVariants = {
   },
 };
 
-export default function AdminMessages({ onOpenAgenda = () => {} }) {
-  const [messages, setMessages] = useState([]);
+export default function AdminMessages({ messages = [], isLoading = false, onOpenAgenda = () => {}, onRefreshMessages = async () => {} }) {
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
-  useEffect(() => {
-    let isActive = true;
+  if (isLoading) {
+    return (
+      <section className={styles.section}>
+        <header className={styles.header}>
+          <div>
+            <h2 className={styles.title}>Mensagens Recebidas</h2>
+            <p className={styles.subtitle}>Gerencie seus contatos e orçamentos.</p>
+          </div>
+        </header>
 
-    const loadMessages = async () => {
-      const nextMessages = await getMessages();
-
-      if (isActive) {
-        setMessages(nextMessages);
-      }
-    };
-
-    loadMessages();
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
+        <MotionDiv className={styles.emptyState} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+          <MessageSquare className={styles.emptyIcon} aria-hidden="true" />
+          <p className={styles.emptyText}>Carregando mensagens...</p>
+        </MotionDiv>
+      </section>
+    );
+  }
 
   const handleMarkAsRead = async (id) => {
-    await markAsRead(id);
-    setMessages(await getMessages());
+    try {
+      setIsActionLoading(true);
+      await markAsRead(id);
+      await onRefreshMessages();
+      setIsActionLoading(false);
+      toast.success('Mensagem marcada como lida!');
+    } catch (error) {
+      console.error('Erro ao marcar mensagem como lida:', error);
+      setIsActionLoading(false);
+      toast.error('Ocorreu um erro. Tente novamente.');
+    }
   };
 
   const handleDeleteMessage = async (id) => {
-    await deleteMessage(id);
-    setMessages(await getMessages());
+    try {
+      setIsActionLoading(true);
+      await deleteMessage(id);
+      await onRefreshMessages();
+      setIsActionLoading(false);
+      toast.success('Mensagem excluída com sucesso!');
+    } catch (error) {
+      console.error('Erro ao excluir mensagem:', error);
+      setIsActionLoading(false);
+      toast.error('Ocorreu um erro. Tente novamente.');
+    }
   };
 
   return (
@@ -98,16 +117,16 @@ export default function AdminMessages({ onOpenAgenda = () => {} }) {
                 <div className={styles.messageBox}>{message.message}</div>
 
                 <div className={styles.actions}>
-                  <button type="button" onClick={() => onOpenAgenda(message)} className={styles.scheduleButton}>
+                  <button type="button" onClick={() => onOpenAgenda(message)} className={styles.scheduleButton} disabled={isActionLoading}>
                     <CalendarPlus className={styles.actionIcon} aria-hidden="true" /> Agendar Serviço
                   </button>
 
-                  <button type="button" onClick={() => handleDeleteMessage(message.id)} className={styles.deleteButton}>
+                  <button type="button" onClick={() => handleDeleteMessage(message.id)} className={styles.deleteButton} disabled={isActionLoading}>
                     <Trash2 className={styles.actionIcon} aria-hidden="true" /> Excluir
                   </button>
 
                   {isNew ? (
-                    <button type="button" onClick={() => handleMarkAsRead(message.id)} className={styles.readButton}>
+                    <button type="button" onClick={() => handleMarkAsRead(message.id)} className={styles.readButton} disabled={isActionLoading}>
                       <Circle className={styles.actionIcon} aria-hidden="true" /> Marcar como lido
                     </button>
                   ) : (

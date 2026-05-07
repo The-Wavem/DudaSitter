@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Image as ImageIcon, Info, Link as LinkIcon, Plus, Quote, Trash2, Upload } from 'lucide-react';
+import toast from 'react-hot-toast';
 import {
   addGalleryImage,
   addTestimonial,
@@ -50,21 +51,26 @@ export default function AdminCMS() {
     let isActive = true;
 
     const loadCmsData = async () => {
-      const [nextGallery, nextTestimonials, nextAboutData, nextContactData] = await Promise.all([
-        getGallery(),
-        getTestimonials(),
-        getAboutData(),
-        getContactData(),
-      ]);
+      try {
+        const [nextGallery, nextTestimonials, nextAboutData, nextContactData] = await Promise.all([
+          getGallery(),
+          getTestimonials(),
+          getAboutData(),
+          getContactData(),
+        ]);
 
-      if (!isActive) {
-        return;
+        if (!isActive) {
+          return;
+        }
+
+        setGallery(nextGallery);
+        setTestimonials(nextTestimonials);
+        setAboutData(nextAboutData);
+        setContactData(nextContactData);
+      } catch (error) {
+        console.error('Erro ao carregar CMS:', error);
+        toast.error('Ocorreu um erro. Tente novamente.');
       }
-
-      setGallery(nextGallery);
-      setTestimonials(nextTestimonials);
-      setAboutData(nextAboutData);
-      setContactData(nextContactData);
     };
 
     loadCmsData();
@@ -78,32 +84,54 @@ export default function AdminCMS() {
     event.preventDefault();
     if (!newImgUrl) return;
 
-    await addGalleryImage(newImgUrl, newImgService);
-    setGallery(await getGallery());
-    setNewImgUrl('');
+    try {
+      await addGalleryImage(newImgUrl, newImgService);
+      setGallery(await getGallery());
+      setNewImgUrl('');
+      toast.success('Foto salva com sucesso!');
+    } catch (error) {
+      console.error('Erro ao adicionar imagem:', error);
+      toast.error('Ocorreu um erro. Tente novamente.');
+    }
   };
 
   const handleAddTestimonial = async (event) => {
     event.preventDefault();
     if (!newTestTutor || !newTestPet || !newTestMessage) return;
 
-    await addTestimonial({ name: newTestTutor, pet: newTestPet, text: newTestMessage });
-    setTestimonials(await getTestimonials());
-    setNewTestTutor('');
-    setNewTestPet('');
-    setNewTestMessage('');
+    try {
+      await addTestimonial({ name: newTestTutor, pet: newTestPet, text: newTestMessage });
+      setTestimonials(await getTestimonials());
+      setNewTestTutor('');
+      setNewTestPet('');
+      setNewTestMessage('');
+      toast.success('Depoimento salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao adicionar depoimento:', error);
+      toast.error('Ocorreu um erro. Tente novamente.');
+    }
   };
 
   const handleSaveAbout = async (event) => {
     event.preventDefault();
-    await updateAboutData(aboutData);
-    window.alert('Dados salvos com sucesso!');
+    try {
+      await updateAboutData(aboutData);
+      toast.success('Conteúdo sobre salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar dados sobre:', error);
+      toast.error('Ocorreu um erro. Tente novamente.');
+    }
   };
 
   const handleSaveContact = async (event) => {
     event.preventDefault();
-    await updateContactData(contactData);
-    window.alert('Informações de contato salvas!');
+    try {
+      await updateContactData(contactData);
+      toast.success('Contato salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar contato:', error);
+      toast.error('Ocorreu um erro. Tente novamente.');
+    }
   };
 
   return (
@@ -163,7 +191,16 @@ export default function AdminCMS() {
                   <div key={image.id} className={styles.imageCard}>
                     <img src={image.url} alt="Galeria" className={styles.image} />
                     <div className={`${styles.serviceTag} ${image.service === 'Sitter' ? styles.serviceTagSitter : styles.serviceTagWalker}`}>{image.service}</div>
-                    <button type="button" onClick={async () => { await deleteGalleryImage(image.id); setGallery(await getGallery()); }} className={styles.deleteOverlayButton}>
+                    <button type="button" onClick={async () => {
+                      try {
+                        await deleteGalleryImage(image.id);
+                        setGallery(await getGallery());
+                        toast.success('Foto excluída com sucesso!');
+                      } catch (error) {
+                        console.error('Erro ao excluir imagem:', error);
+                        toast.error('Ocorreu um erro. Tente novamente.');
+                      }
+                    }} className={styles.deleteOverlayButton}>
                       <Trash2 className={styles.deleteIcon} aria-hidden="true" />
                     </button>
                   </div>
@@ -211,7 +248,16 @@ export default function AdminCMS() {
                       <p className={styles.testimonialText}>"{testimonial.text}"</p>
                       <p className={styles.testimonialAuthor}>{testimonial.name} <span>({testimonial.pet})</span></p>
                     </div>
-                    <button type="button" onClick={async () => { await deleteTestimonial(testimonial.id); setTestimonials(await getTestimonials()); }} className={styles.deleteMiniButton}>
+                    <button type="button" onClick={async () => {
+                      try {
+                        await deleteTestimonial(testimonial.id);
+                        setTestimonials(await getTestimonials());
+                        toast.success('Depoimento excluído com sucesso!');
+                      } catch (error) {
+                        console.error('Erro ao excluir depoimento:', error);
+                        toast.error('Ocorreu um erro. Tente novamente.');
+                      }
+                    }} className={styles.deleteMiniButton}>
                       <Trash2 className={styles.deleteIcon} aria-hidden="true" />
                     </button>
                   </article>

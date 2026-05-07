@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { login } from '@/services/authAPI';
 import styles from './AdminLogin.module.css';
 
@@ -28,10 +29,12 @@ export default function AdminLogin({ onSuccess }) {
     try {
       await login(email, password);
       setError('');
+      toast.success('Login realizado com sucesso!');
       onSuccess();
     } catch (authError) {
       setError('E-mail ou senha incorretos.');
       console.error('Erro ao autenticar admin:', authError);
+      toast.error('E-mail ou senha incorretos.');
     } finally {
       setIsSubmitting(false);
     }

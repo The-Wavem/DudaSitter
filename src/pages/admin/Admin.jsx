@@ -1,7 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdminLogin from '@/sections/admin/AdminLogin';
+import AdminExitModal from '@/sections/admin/AdminExitModal';
 import AdminSidebar from '@/sections/admin/AdminSidebar';
+import { getMessages } from '@/services/messagesAPI';
 import { logout, subscribeToAuthChanges } from '@/services/authAPI';
 import styles from './Admin.module.css';
 
@@ -42,8 +45,27 @@ function SectionFallback() {
 
 const MotionDiv = motion.div;
 export default function Admin() {
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('messages');
+  const [messages, setMessages] = useState([]);
+  const [isMessagesLoading, setIsMessagesLoading] = useState(false);
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+
+  const refreshMessages = useCallback(async () => {
+    setIsMessagesLoading(true);
+
+    try {
+      const nextMessages = await getMessages();
+      setMessages(nextMessages);
+      return nextMessages;
+    } catch (error) {
+      console.error('Erro ao carregar mensagens no Admin:', error);
+      return [];
+    } finally {
+      setIsMessagesLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuthChanges((user) => {
@@ -82,14 +104,43 @@ export default function Admin() {
     };
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setMessages([]);
+      return undefined;
+    }
+
+    const handleMessagesUpdated = () => {
+      refreshMessages();
+    };
+
+    refreshMessages();
+    window.addEventListener('duda-messages-updated', handleMessagesUpdated);
+
+    return () => {
+      window.removeEventListener('duda-messages-updated', handleMessagesUpdated);
+    };
+  }, [isAuthenticated, refreshMessages]);
+
   const handleLoginSuccess = () => {
     setActiveTab('messages');
   };
 
-  const handleLogout = async () => {
+  const handleLogoutRequest = () => {
+    setIsExitModalOpen(true);
+  };
+
+  const handleGoHome = () => {
+    setIsExitModalOpen(false);
+    navigate('/');
+  };
+
+  const handleConfirmLogout = async () => {
     await logout();
+    setIsExitModalOpen(false);
     setIsAuthenticated(false);
     setActiveTab('messages');
+    navigate('/');
   };
 
   return (
@@ -100,7 +151,7 @@ export default function Admin() {
         </MotionDiv>
       ) : (
         <MotionDiv key="dashboard" className={styles.layout} variants={pageVariants} initial="hidden" animate="visible" exit="exit">
-          <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} handleLogout={handleLogout} />
+          <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} handleLogout={handleLogoutRequest} />
 
           <main className={styles.main}>
             <Suspense fallback={<SectionFallback />}>
@@ -113,13 +164,27 @@ export default function Admin() {
                   exit={{ opacity: 0, y: 8 }}
                   transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {activeTab === 'messages' && <AdminMessages onOpenAgenda={() => setActiveTab('agenda')} />}
+                  {activeTab === 'messages' && (
+                    <AdminMessages
+                      messages={messages}
+                      isLoading={isMessagesLoading}
+                      onRefreshMessages={refreshMessages}
+                      onOpenAgenda={() => setActiveTab('agenda')}
+                    />
+                  )}
                   {activeTab === 'agenda' && <AdminAgenda />}
                   {activeTab === 'cms' && <AdminCMS />}
                 </MotionDiv>
               </AnimatePresence>
             </Suspense>
           </main>
+
+          <AdminExitModal
+            isOpen={isExitModalOpen}
+            onClose={() => setIsExitModalOpen(false)}
+            onGoHome={handleGoHome}
+            onConfirmLogout={handleConfirmLogout}
+          />
         </MotionDiv>
       )}
     </AnimatePresence>

@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import toast from 'react-hot-toast';
 import { getAppointments, saveAppointment, updateAppointmentStatus } from '@/services/agendaAPI';
 import styles from './AdminAgenda.module.css';
 
@@ -44,10 +45,15 @@ export default function AdminAgenda() {
     let isActive = true;
 
     const loadAppointments = async () => {
-      const nextAppointments = await getAppointments();
+      try {
+        const nextAppointments = await getAppointments();
 
-      if (isActive) {
-        setAppointments(nextAppointments);
+        if (isActive) {
+          setAppointments(nextAppointments);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar agendamentos:', error);
+        toast.error('Ocorreu um erro. Tente novamente.');
       }
     };
 
@@ -69,23 +75,29 @@ export default function AdminAgenda() {
     const appointmentStartTime = format(startTime, 'HH:mm');
     const appointmentEndTime = format(endTime, 'HH:mm');
 
-    await saveAppointment({
-      tutorName: newAppTutor,
-      petName: newAppPet,
-      service: newAppService,
-      date: appointmentDate,
-      startTime: appointmentStartTime,
-      endTime: appointmentEndTime,
-      notes: newAppNotes,
-    });
+    try {
+      await saveAppointment({
+        tutorName: newAppTutor,
+        petName: newAppPet,
+        service: newAppService,
+        date: appointmentDate,
+        startTime: appointmentStartTime,
+        endTime: appointmentEndTime,
+        notes: newAppNotes,
+      });
 
-    setAppointments(await getAppointments());
-    setNewAppTutor('');
-    setNewAppPet('');
-    setSelectedDate(new Date());
-    setStartTime(new Date());
-    setEndTime(new Date());
-    setNewAppNotes('');
+      setAppointments(await getAppointments());
+      setNewAppTutor('');
+      setNewAppPet('');
+      setSelectedDate(new Date());
+      setStartTime(new Date());
+      setEndTime(new Date());
+      setNewAppNotes('');
+      toast.success('Agendamento salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar agendamento:', error);
+      toast.error('Ocorreu um erro. Tente novamente.');
+    }
   };
 
   const getFriendlyDate = (dateStr, timeStr) => {
@@ -208,10 +220,28 @@ export default function AdminAgenda() {
                 <div className={styles.actions}>
                   {appointment.status === 'scheduled' ? (
                     <>
-                      <button type="button" onClick={async () => { await updateAppointmentStatus(appointment.id, 'completed'); setAppointments(await getAppointments()); }} className={styles.completeButton}>
+                      <button type="button" onClick={async () => {
+                        try {
+                          await updateAppointmentStatus(appointment.id, 'completed');
+                          setAppointments(await getAppointments());
+                          toast.success('Agendamento concluído com sucesso!');
+                        } catch (error) {
+                          console.error('Erro ao concluir agendamento:', error);
+                          toast.error('Ocorreu um erro. Tente novamente.');
+                        }
+                      }} className={styles.completeButton}>
                         <Check className={styles.actionIcon} aria-hidden="true" /> Concluir
                       </button>
-                      <button type="button" onClick={async () => { await updateAppointmentStatus(appointment.id, 'cancelled'); setAppointments(await getAppointments()); }} className={styles.cancelButton}>
+                      <button type="button" onClick={async () => {
+                        try {
+                          await updateAppointmentStatus(appointment.id, 'cancelled');
+                          setAppointments(await getAppointments());
+                          toast.success('Agendamento cancelado com sucesso!');
+                        } catch (error) {
+                          console.error('Erro ao cancelar agendamento:', error);
+                          toast.error('Ocorreu um erro. Tente novamente.');
+                        }
+                      }} className={styles.cancelButton}>
                         <X className={styles.actionIcon} aria-hidden="true" /> Cancelar
                       </button>
                     </>

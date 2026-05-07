@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle2, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 import { saveMessage } from '@/services/messagesAPI';
 import styles from './ContactForm.module.css';
 
@@ -29,10 +30,12 @@ export default function ContactForm() {
 
     try {
       await saveMessage(formData);
+      toast.success('Mensagem enviada com sucesso! 🐾');
       setSubmitted(true);
       setFormData({ name: '', petName: '', service: 'Pet Sitter (Hospedagem em casa)', message: '' });
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
+      toast.error('Ocorreu um erro. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
